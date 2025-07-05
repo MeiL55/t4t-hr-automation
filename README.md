@@ -7,14 +7,14 @@ An internal HR automation platform for **Teens 4 Teens (T4T)** — a youth-led n
 ## Team Members
 
 - **Frontend Developers**
-  - [Finlay McAfee](https://github.com/alicezhang)
-  - [Brian Lee](https://www.linkedin.com/in/brian-lee-dev)
+  - [Finlay McAfee](https://www.linkedin.com/in/finlay-mcafee)
+  - [Himanshu Panchal](https://www.linkedin.com/in/himanshu--panchal/)
 
 - **Full Stack Developer**
-  - [Mei Li](https://github.com/MeiL55)
+  - [Mei Li](https://www.linkedin.com/in/mei-li-ba800b290/)
 
 - **Software Technical Assistant**
-  - [Prabhav Rao](https://www.linkedin.com/in/jordan-kim-tech)
+  - [Prabhav Rao](https://www.linkedin.com/in/prabhav-rao-119aa0262/)
 
 
 ---
@@ -37,12 +37,12 @@ Check our website: https://www.teens4teens.net/ for more details.
 
 ---
 
-## 🧱 Tech Stack
+## Tech Stacks
 
 - **Frontend:** Next.js (App Router) + TypeScript + Tailwind CSS
 - **Backend:** Flask (Python)
 - **Database:** Firebase (auth & storage) and planned relational support (PostgreSQL)
-- **Dev Tools:** Docker (WIP), ESLint, Vercel (frontend), Render (backend)
+- **Dev Tools:** Docker (WIP), ESLint, Vercel (frontend)
 
 ---
 
@@ -53,10 +53,10 @@ T4T-HR-AUTOMATION/
 │
 ├── backend/                # Flask backend application
 │   ├── controllers/        # Business logic and service layer
-│   ├── models/             # Database models (e.g., SQLAlchemy)
+│   ├── models/             # Database models
 │   ├── routes/             # API endpoints (Flask Blueprints)
 │   ├── tests/              # Unit and integration tests for backend
-│   ├── utils/              # Helper functions (e.g., JWT, validators)
+│   ├── utils/              # Helper functions
 │   ├── app.py              # Flask app entry point
 │   └── requirements.txt    # Python dependencies
 │
@@ -70,7 +70,7 @@ T4T-HR-AUTOMATION/
 │   ├── tsconfig.json       # TypeScript configuration
 │   ├── package.json        # Frontend project dependencies and scripts
 │   ├── package-lock.json   # Dependency lock file
-│   └── README.md           # Frontend-specific documentation (optional)
+│   └── README.md           # Frontend-specific documentation
 │
 ├── .gitignore              # Global ignores (Python, system files, etc.)
 ├── LICENSE                 # Project license
