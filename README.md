@@ -21,8 +21,7 @@ An internal HR automation platform for **Teens 4 Teens (T4T)** — a youth-led n
 
 ## About the Organization
 
-**Teens 4 Teens**, a 501(c)3 non-profit, empowers young women, and their economies, globally with period care and menstrual education so that no one has to suffer in silence.
-Check our website: https://www.teens4teens.net/ for more details.
+**[Teens 4 Teens](https://www.teens4teens.net/)**, a 501(c)3 non-profit, empowers young women, and their economies, globally with period care and menstrual education so that no one has to suffer in silence.
 
 ---
 
