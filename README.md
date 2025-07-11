@@ -4,7 +4,7 @@ An internal HR automation platform for **Teens 4 Teens (T4T)** — a youth-led n
 
 ---
 
-## Team Members
+## Development Team
 
 - **Frontend Developers**
   - [Finlay McAfee](https://www.linkedin.com/in/finlay-mcafee)
