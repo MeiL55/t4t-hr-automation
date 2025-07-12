@@ -40,8 +40,8 @@ An internal HR automation platform for **Teens 4 Teens (T4T)** — a youth-led n
 
 - **Frontend:** Next.js (App Router) + TypeScript + Tailwind CSS
 - **Backend:** Flask (Python)
-- **Database:** Firebase (auth & storage) and planned relational support (PostgreSQL)
-- **Dev Tools:** Docker (WIP), ESLint, Vercel (frontend)
+- **Database:** SQLAlchemy + Supabase (cloud hosting)
+- **Dev Tools:** Docker(expected), ESLint, Vercel (frontend)
 
 ---
 
@@ -51,11 +51,11 @@ An internal HR automation platform for **Teens 4 Teens (T4T)** — a youth-led n
 T4T-HR-AUTOMATION/
 │
 ├── backend/                # Flask backend application
-│   ├── controllers/        # Business logic and service layer
-│   ├── models/             # Database models
+│   ├── services/           # Service layer - resume parsing, screening, email sending, resume uploading to cloud, etc.
+│   ├── models/             # SQL Database models
 │   ├── routes/             # API endpoints (Flask Blueprints)
 │   ├── tests/              # Unit and integration tests for backend
-│   ├── utils/              # Helper functions
+│   ├── utils/              # Helper functions (e.g. createdb.py)
 │   ├── app.py              # Flask app entry point
 │   └── requirements.txt    # Python dependencies
 │
