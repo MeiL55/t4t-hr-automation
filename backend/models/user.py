@@ -1,19 +1,18 @@
+from sqlalchemy import Column, Integer, String, DateTime, CheckConstraint
+from sqlalchemy.sql import func
+from sqlalchemy.dialects.postgresql import ENUM
+from .database import Base
 
-from pymongo import MongoClient
-import os
-from dotenv import load_dotenv
+class User(Base):
+    __tablename__ = "users"
 
-env_path = os.path.join(os.path.dirname(__file__), "..", "..", ".env")
-load_dotenv(dotenv_path=env_path)
-print(os.getenv("MONGO_URI"))
-client = MongoClient(os.getenv("MONGO_URI"))
-db = client["t4t_hr"]
-users = db["users"]
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    email = Column(String, unique=True, nullable=False)
+    full_name = Column(String, nullable=False)
+    password_hash = Column(String, nullable=False)
+    role = Column(String, nullable=False)  # optional: can use Enum
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
 
-res = users.insert_one({
-    "email": "meili@example.com",
-    "role": "applicant",
-    "name": "Mei Li"
-})
-print("Inserted with ID:", res.inserted_id)
-print(client.list_database_names())
+    __table_args__ = (
+        CheckConstraint("role IN ('admin', 'hr', 'applicant')", name="check_user_role"),
+    )
