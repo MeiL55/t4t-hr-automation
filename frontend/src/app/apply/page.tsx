@@ -1,12 +1,9 @@
-// src/app/survey/page.jsx
 "use client";
 import dynamic from "next/dynamic";
 
-// Dynamically import to avoid SSR issues
-const SurveyComponent = dynamic(
-  () => import("@/components/SurveyComponent"),
-  { ssr: false }
-);
+const SurveyComponent = dynamic(() => import("@/components/SurveyComponent"), {
+  ssr: false,
+});
 
 export default function SurveyPage() {
   return (
