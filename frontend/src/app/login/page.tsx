@@ -71,7 +71,7 @@ export default function LoginPage() {
       else if (role === "admin") router.push("/admin_panel")
       else if (role === "applicant") router.push("/apply")
       else router.push("/unauthorized")
-    } catch (err) {
+    } catch {
       alert("Login failed")
     }
   }
@@ -86,7 +86,7 @@ export default function LoginPage() {
       })
       alert("Signup successful! Please log in.")
       setMode("login")
-    } catch (err) {
+    } catch {
       alert("Signup failed")
     }
   }
