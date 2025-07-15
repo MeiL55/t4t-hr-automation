@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import axios from "axios"
-import debounce from "lodash.debounce"
+import { debounce } from 'lodash'
 
 export default function LoginPage() {
   const [mode, setMode] = useState<"login" | "signup">("login")
