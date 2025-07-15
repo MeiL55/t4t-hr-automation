@@ -7,7 +7,7 @@ import { Model, FunctionFactory } from "survey-core"
 import "survey-core/survey-core.min.css"
 import { surveyJson } from "@/data/applyForm"
 
-FunctionFactory.Instance.register("getAge", function (params: any[]): number {
+FunctionFactory.Instance.register("getAge", function (params: number[]): number {
   const birthdateStr = params[0]
   if (!birthdateStr) return 100
   const birth = new Date(birthdateStr)
