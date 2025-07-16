@@ -24,6 +24,34 @@ export default function SurveyComponent() {
   const [model] = useState(() => new Model(surveyJson))
 
   useEffect(() => {
+    // --- START: FIX ---
+    // The submission logic is moved inside useEffect to prevent
+    // it from being added twice by React's Strict Mode.
+    const onComplete = async (sender: any) => {
+      const data = sender.data
+      console.log("Survey submitted:", data)
+
+      try {
+        const token = localStorage.getItem("token")
+
+        const res = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/application`, data,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        )
+        console.log("Application submitted:", res.data)
+      } catch (err) {
+        console.error("Failed to submit application:", err)
+        alert("Failed to submit application")
+      }
+    }
+
+    model.onComplete.add(onComplete)
+    // --- END: FIX ---
+
     async function fetchAndInjectTelephone() {
       try {
         const token = localStorage.getItem("token")
@@ -42,28 +70,13 @@ export default function SurveyComponent() {
       }
     }
     fetchAndInjectTelephone()
-  }, [model])
-  model.onComplete.add(async (sender) => {
-    const data = sender.data
-    console.log("Survey submitted:", data)
 
-    try {
-      const token = localStorage.getItem("token")
-
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/application`, data,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      )
-      console.log("Application submitted:", res.data)
-    } catch (err) {
-      console.error("Failed to submit application:", err)
-      alert("Failed to submit application")
+    // It's best practice to clean up the listener when the component unmounts
+    return () => {
+      model.onComplete.remove(onComplete)
     }
- })
+  }, [model])
+
   return (
     <div className="max-w-2xl mx-auto my-10">
       <Survey model={model} />
