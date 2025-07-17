@@ -102,7 +102,7 @@ export const surveyJson = {
           "type": "file",
           "name": "resume",
           "title": "Upload Your Resume (PDF Preferred):",
-          "isRequired": true
+          "isRequired": false
 
         },
         {
