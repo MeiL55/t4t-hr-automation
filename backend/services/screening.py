@@ -6,6 +6,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")
 from backend.models.user import User
 from backend.models.application import Application
 from backend.services.send_email_stages import send_email_for_stage
+from pdfminer.high_level import extract_text
+KEYWORDS = ["intern", "computer science", "software", "python", "java"]
+
+
 
 # ----- Screening criteria -----
 MIN_GPA = 2.0
@@ -42,3 +46,23 @@ def screen_applications(app: Application, db: Session) -> str:
         #passed_ids.append(app.id)
     db.commit()
     return app.id
+
+#for future use
+def parse_resume(path: str) -> dict:
+    """
+    Parses a local PDF resume using pyresparser and returns structured info.
+    """
+    try:
+        #print(path)
+        text = extract_text(path)
+        #print(text)
+        text_lower = text.lower()
+        found = [kw for kw in KEYWORDS if kw in text_lower]
+        return {
+            "matched_keywords": found,
+            "matched_count": len(found),
+            "is_qualified": len(found) >= 3
+        }
+    except Exception as e:
+        print(f"ERROR: Failed to parse resume. Reason: {e}")
+        return None
