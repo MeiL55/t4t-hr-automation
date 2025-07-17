@@ -12,6 +12,7 @@ from dotenv import load_dotenv
 env_path = os.path.join(os.path.dirname(__file__), "..", "..", ".env")
 from flask import Blueprint, request, jsonify
 from backend.utils.auth_utils import token_required
+from backend.services.screening import screen_applications
 
 user_bp = Blueprint("user", __name__)
 @user_bp.route("/api/user_info", methods=["GET"])
@@ -46,8 +47,11 @@ def submit_application():
         db = SessionLocal()
         db.add(app)
         db.commit()
-        return jsonify({"message": "Application submitted"}), 200
+        screen_applications(app, db)
+        return jsonify({"message": "Application submitted and parsed."}), 200
     except Exception as e:
         import traceback
         traceback.print_exc()
         return jsonify({"error": str(e)}), 400
+    finally:
+        db.close()
