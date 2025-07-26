@@ -19,6 +19,7 @@ class Application(Base):
     # One-to-one with User
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, unique=True)
     user = relationship("User", backref="application", lazy="joined")
+    
     # Applicant info
     date_of_birth = Column(Date, nullable=False)
     guardian_phone = Column(String, nullable=True)
@@ -29,13 +30,19 @@ class Application(Base):
     education_level = Column(String)
     school = Column(String)
     team_applied = Column(String)
+    
+    # NEW: Layer for keyword screening score
+    keyword_score = Column(Integer, default=0, nullable=False)
+    
     # Stage: full lifecycle tracking
     stage = Column(String, default="submitted")
+    
     # Email tracking
     interview_1_email_sent = Column(Boolean, default=False)
     interview_2_email_sent = Column(Boolean, default=False)
     offer_email_sent = Column(Boolean, default=False)
     rejection_email_sent = Column(Boolean, default=False)
+    
     # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
@@ -50,10 +57,10 @@ class Application(Base):
             name="check_edu_level"
         ),
         CheckConstraint(
-            "team_applied IN ('software', 'finance', 'media', 'outreach', 'human_resources', 'chapters')",
+            "team_applied IN ('software', 'finance', 'media', 'outreach', 'special ops', 'human_resources', 'chapters')",
             name="check_team_applied"
         ),
-        # Allowed values for stage (replace status entirely)
+        # Allowed values for stage
         CheckConstraint(
             "stage IN ("
             "'submitted', "

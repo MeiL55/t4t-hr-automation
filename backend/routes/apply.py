@@ -12,9 +12,12 @@ from dotenv import load_dotenv
 env_path = os.path.join(os.path.dirname(__file__), "..", "..", ".env")
 from flask import Blueprint, request, jsonify
 from backend.utils.auth_utils import token_required
-from backend.services.screening import screen_applications
+
+#import the new scoring and parsing functions
+from backend.services.screening import screen_applications, parse_resume_keywords, calculate_keyword_score
 
 user_bp = Blueprint("user", __name__)
+
 @user_bp.route("/api/user_info", methods=["GET"])
 @token_required
 def get_user_info():
@@ -31,7 +34,16 @@ def get_user_info():
 def submit_application():
     user = request.user
     data = request.json
+    db = SessionLocal()
+
     try:
+        resume_url = data.get("resume_url", "https://dummy.resume.com")
+        resume_text_for_scoring = "experienced with python, flask, sql, and project management."
+        
+        team_applied = data["team_applied"]
+        score = calculate_keyword_score(resume_text_for_scoring, team_applied)
+        
+        # Create the application with the new keyword_score
         app = Application(
             user_id=user.id,
             date_of_birth=data["date_of_birth"],
@@ -39,19 +51,23 @@ def submit_application():
             us_based=data["us_based"],
             has_criminal_record=data["has_criminal_record"],
             education_level=data["education_level"],
-            resume_url="https://dummy.resume.com", #set for dummy right now
-            team_applied=data["team_applied"],
+            resume_url=resume_url, 
+            team_applied=team_applied,
             guardian_phone=data.get("guardian_phone"),
-            school=data.get("school")
+            school=data.get("school"),
+            keyword_score=score # Pass the calculated score here
         )
-        db = SessionLocal()
+        
         db.add(app)
         db.commit()
+        
         screen_applications(app, db)
+        
         return jsonify({"message": "Application submitted and parsed."}), 200
     except Exception as e:
         import traceback
         traceback.print_exc()
+        db.rollback() # Rollback on error
         return jsonify({"error": str(e)}), 400
     finally:
         db.close()

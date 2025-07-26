@@ -66,3 +66,34 @@ def parse_resume(path: str) -> dict:
     except Exception as e:
         print(f"ERROR: Failed to parse resume. Reason: {e}")
         return None
+
+#keyword score method   
+def calculate_keyword_score(resume_text, role):
+    """
+    Calculates a score for a resume based on keywords for a specific role.
+    """
+    score = 0
+    resume_text_lower = resume_text.lower()
+
+    # Construct the path to the keywords file
+    keywords_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'role_keywords.json')
+
+    try:
+        with open(keywords_path, 'r') as f:
+            all_keywords = json.load(f)
+    except FileNotFoundError:
+        print("Error: keywords.json not found.")
+        return 0
+
+    # Get the keywords and points for the specific role
+    role_keywords = all_keywords.get(role)
+    if not role_keywords:
+        print(f"Warning: No keywords defined for role: {role}")
+        return 0
+
+    # Calculate score
+    for keyword, points in role_keywords.items():
+        if keyword.lower() in resume_text_lower:
+            score += points
+            
+    return score
