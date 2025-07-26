@@ -1,5 +1,5 @@
 {
-  "Outreach": {
+  "outreach": {
     "cold calling": 5,
     "cold emailing": 5,
     "sales": 4,
@@ -14,7 +14,7 @@
     "community engagement": 4,
     "volunteer work": 3
   },
-  "Special Ops": {
+  "special_ops": {
     "leadership": 5,
     "data analysis": 3,
     "excel": 5,
@@ -40,7 +40,7 @@
     "create": 3,
     "optimize": 2
   },
-  "Software": {
+  "software": {
     "communication": 5,
     "team collaboration": 5,
     "problem solving": 4,
@@ -71,7 +71,7 @@
     "portfolio": 3,
     "resume": 3
   },
-  "Finance": {
+  "finance": {
     "budgeting": 5,
     "grant writing": 5,
     "financial analysis": 5,
@@ -93,7 +93,7 @@
     "compliance": 3,
     "writing samples": 3
   },
-  "Media": {
+  "media": {
     "graphic design": 5,
     "copywriting": 5,
     "canva": 5,

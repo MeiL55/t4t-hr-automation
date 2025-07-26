@@ -93,6 +93,7 @@ export const surveyJson = {
             { "value": "finance", "text": "Finance" },
             { "value": "media", "text": "Media" },
             { "value": "outreach", "text": "Outreach" },
+            { "value": "special_ops", "text": "Special Operations" },
             { "value": "human_resources", "text": "Human Resources" },
             { "value": "chapters", "text": "Chapters" }
           ],

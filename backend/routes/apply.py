@@ -39,10 +39,8 @@ def submit_application():
     try:
         resume_url = data.get("resume_url", "https://dummy.resume.com")
         resume_text_for_scoring = "experienced with python, flask, sql, and project management."
-        
         team_applied = data["team_applied"]
         score = calculate_keyword_score(resume_text_for_scoring, team_applied)
-        
         # Create the application with the new keyword_score
         app = Application(
             user_id=user.id,
@@ -52,7 +50,7 @@ def submit_application():
             has_criminal_record=data["has_criminal_record"],
             education_level=data["education_level"],
             resume_url=resume_url, 
-            team_applied=team_applied,
+            team_applied=data["team_applied"],
             guardian_phone=data.get("guardian_phone"),
             school=data.get("school"),
             keyword_score=score # Pass the calculated score here
@@ -60,9 +58,7 @@ def submit_application():
         
         db.add(app)
         db.commit()
-        
         screen_applications(app, db)
-        
         return jsonify({"message": "Application submitted and parsed."}), 200
     except Exception as e:
         import traceback

@@ -47,12 +47,12 @@ def reset_database():
         Base.metadata.drop_all(engine)
         print("--- CREATING NEW TABLES ---")
         Base.metadata.create_all(engine)
-        print("✅ Database has been reset successfully.")
+        print("Database has been reset successfully.")
     except Exception as e:
         print(f"An error occurred: {e}")
 
 if __name__ == "__main__":
-    print("⚠️  WARNING: This script will delete all data in your database.")
+    print("WARNING: This script will delete all data in your database.")
     choice = input("Are you sure you want to reset the database? (yes/no): ")
     if choice.lower() == 'yes':
         reset_database()

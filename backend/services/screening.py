@@ -20,12 +20,15 @@ def calculate_age(dob: date) -> int:
 
 def is_disqualified(app: Application) -> bool:
     age = calculate_age(app.date_of_birth) if app.date_of_birth else None
+    score = calculate_keyword_score("../tests/oz_resume.pdf", app.team_applied) #keep path as dummy
+    score = app.keyword_score
     disqualified = (
         app.gpa is not None and app.gpa < MIN_GPA or
         not app.us_based or
         age is None or age < AGE_RANGE[0] or age > AGE_RANGE[1] or
         app.has_criminal_record or
-        app.education_level not in EDU_LEVELS_ALLOWED
+        app.education_level not in EDU_LEVELS_ALLOWED or
+        score < 20
     )
     print(f"Disqualified Check: {disqualified}")
     return disqualified
@@ -41,12 +44,12 @@ def screen_applications(app: Application, db: Session) -> str:
         app.stage = 'rejected'
         db.add(app)
         print("Application REJECTED based on initial criteria.")
-        # send_email_for_stage(app, db) 
+        #send_email_for_stage(app, db) 
     else:
         app.stage = 'interview_1'
         db.add(app)
         print("Application PASSED to interview stage.")
-        # send_email_for_stage(app, db) 
+        #send_email_for_stage(app, db) 
         
     db.commit() 
     print(f"--- Screening complete for application ID: {app.id} ---")
@@ -64,35 +67,29 @@ def parse_resume_keywords(path: str) -> str:
         print(f"ERROR: Failed to parse resume. Reason: {e}")
         return ""
 
-def calculate_keyword_score(resume_text, role):
+def calculate_keyword_score(path, role):
     """
     Calculates a score for a resume based on keywords for a specific role.
     """
     score = 0
-    resume_text_lower = resume_text.lower()
-    
-    
-    role_key = role.title()
-
+    resume_text_lower = parse_resume_keywords(path)
+    role_key = role
     keywords_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'role_keywords.json')
-
     try:
         with open(keywords_path, 'r') as f:
             all_keywords = json.load(f)
     except FileNotFoundError:
         print("Error: role_keywords.json not found.")
         return 0
-
     role_keywords = all_keywords.get(role_key)
     if not role_keywords:
         print(f"Warning: No keywords defined for role: {role_key}")
         return 0
-
     print(f"Calculating score for role: {role_key}")
     for keyword, points in role_keywords.items():
         if keyword.lower() in resume_text_lower:
             score += points
             print(f"  + Found keyword '{keyword.lower()}' for {points} points.")
-            
     print(f"Total Keyword Score: {score}")
+
     return score
