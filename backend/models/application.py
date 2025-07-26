@@ -19,14 +19,16 @@ class Application(Base):
     # One-to-one with User
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, unique=True)
     user = relationship("User", backref="application", lazy="joined")
-
     # Applicant info
+    date_of_birth = Column(Date, nullable=False)
+    guardian_phone = Column(String, nullable=True)
     resume_url = Column(String, nullable=False)
     gpa = Column(Float, nullable=True)
-    date_of_birth = Column(Date)
     us_based = Column(Boolean)
     has_criminal_record = Column(Boolean)
     education_level = Column(String)
+    school = Column(String)
+    team_applied = Column(String)
     # Stage: full lifecycle tracking
     stage = Column(String, default="submitted")
     # Email tracking
@@ -44,8 +46,12 @@ class Application(Base):
         CheckConstraint("gpa >= 0 AND gpa <= 4.0", name="check_gpa_range"),
         # Education level should be within expected values
         CheckConstraint(
-            "education_level IN ('less_than_high_school', 'high_school', 'college', 'master', 'phd')",
+            "education_level IN ('less_than_high_school', 'high_school', 'associates', 'bachelors', 'masters', 'phd')",
             name="check_edu_level"
+        ),
+        CheckConstraint(
+            "team_applied IN ('software', 'finance', 'media', 'outreach', 'human_resources', 'chapters')",
+            name="check_team_applied"
         ),
         # Allowed values for stage (replace status entirely)
         CheckConstraint(

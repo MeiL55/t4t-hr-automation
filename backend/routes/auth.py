@@ -18,6 +18,7 @@ def signup():
     email = data.get("email")
     password = data.get("password")
     full_name = data.get("full_name")
+    telephone = data.get("telephone")
     if not email or not password or not full_name:
         return jsonify({"error": "Missing required fields"}), 400
     db = SessionLocal()
@@ -30,14 +31,15 @@ def signup():
             email=email,
             password_hash=generate_password_hash(password, method="pbkdf2:sha256"),
             full_name=full_name,
-            role="applicant"
+            telephone=telephone,
+            role="applicant",
         )
         db.add(new_user)
         db.commit()
         return jsonify({"success": True}), 201
     except IntegrityError as e:
         db.rollback()
-        #print("SIGNUP ERROR:", e)
+        print("SIGNUP ERROR:", e)
         return jsonify({"error": "Database error"}), 500
 
 JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "dev-secret")
@@ -62,3 +64,23 @@ def login():
 
     token = jwt.encode(payload, JWT_SECRET_KEY, algorithm="HS256")
     return jsonify({"token": token})
+
+@auth_bp.route("/api/check_email", methods=["POST"])
+def check_email():
+    data = request.get_json()
+    email = data.get("email")
+    if not email:
+        return jsonify({"error": "Email is required"}), 400
+    db = SessionLocal()
+    exists = db.query(User).filter_by(email=email).first()
+    return jsonify({"available": exists is None})
+
+@auth_bp.route("/api/check_telephone", methods=["POST"])
+def check_telephone():
+    data = request.get_json()
+    telephone = data.get("telephone")
+    if not telephone:
+        return jsonify({"error": "Telephone is required"}), 400
+    db = SessionLocal()
+    exists = db.query(User).filter_by(telephone=telephone).first()
+    return jsonify({"available": exists is None})
