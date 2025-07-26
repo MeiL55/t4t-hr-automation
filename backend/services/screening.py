@@ -1,5 +1,6 @@
 import sys
 import os
+import json 
 from datetime import date
 from sqlalchemy.orm import Session
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
@@ -48,7 +49,7 @@ def screen_applications(app: Application, db: Session) -> str:
     return app.id
 
 #for future use
-def parse_resume(path: str) -> dict:
+def parse_resume_keywords(path: str) -> dict:
     """
     Parses a local PDF resume using pyresparser and returns structured info.
     """
@@ -67,7 +68,6 @@ def parse_resume(path: str) -> dict:
         print(f"ERROR: Failed to parse resume. Reason: {e}")
         return None
 
-#keyword score method   
 def calculate_keyword_score(resume_text, role):
     """
     Calculates a score for a resume based on keywords for a specific role.
@@ -84,11 +84,13 @@ def calculate_keyword_score(resume_text, role):
     except FileNotFoundError:
         print("Error: keywords.json not found.")
         return 0
+    role_key = role.title()
 
-    # Get the keywords and points for the specific role
-    role_keywords = all_keywords.get(role)
+    # Get the keywords and points for the specific role using the corrected key
+    role_keywords = all_keywords.get(role_key)
     if not role_keywords:
-        print(f"Warning: No keywords defined for role: {role}")
+        # This warning will now only show if the role truly doesn't exist in the JSON
+        print(f"Warning: No keywords defined for role: {role_key}")
         return 0
 
     # Calculate score
