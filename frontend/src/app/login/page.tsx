@@ -13,9 +13,11 @@ export default function LoginPage() {
   const [telephone, setTelephone] = useState("")
   const [emailValid, setEmailValid] = useState<null | "valid" | "invalid" | "taken">(null)
   const [telephoneValid, setTelephoneValid] = useState<null | "valid" | "invalid" | "taken">(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   const router = useRouter()
 
+  // Email validation (debounced)
   const validateEmail = useCallback(
     debounce(async (inputEmail: string) => {
       if (!inputEmail) return setEmailValid(null)
@@ -31,6 +33,7 @@ export default function LoginPage() {
     []
   )
 
+  // Phone validation (debounced)
   const validateTelephone = useCallback(
     debounce(async (inputTel: string) => {
       if (!inputTel) return setTelephoneValid(null)
@@ -47,18 +50,16 @@ export default function LoginPage() {
   )
 
   useEffect(() => {
-    if (email && mode === "signup") {
-      validateEmail(email)
-    }
+    if (email && mode === "signup") validateEmail(email)
   }, [email, mode, validateEmail])
 
   useEffect(() => {
-    if (telephone && mode === "signup") {
-      validateTelephone(telephone)
-    }
+    if (telephone && mode === "signup") validateTelephone(telephone)
   }, [telephone, mode, validateTelephone])
 
+  // Handle login
   const handleLogin = async () => {
+    setIsLoading(true)
     try {
       const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/login`, { email, password })
       const token = res.data.token
@@ -72,113 +73,121 @@ export default function LoginPage() {
       else if (role === "applicant") router.push("/apply")
       else router.push("/unauthorized")
     } catch (err) {
-      alert("Login failed")
+      alert("Login failed. Please check your credentials.")
+    } finally {
+      setIsLoading(false)
     }
   }
 
+  // Handle signup
   const handleSignup = async () => {
+    setIsLoading(true)
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/signup`, {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/signup", {
         email,
         password,
         full_name: fullName,
         telephone,
       })
-      alert("Signup successful! Please log in.")
+      alert("Account created! Please log in.")
       setMode("login")
+      setEmail("")
+      setPassword("")
+      setFullName("")
+      setTelephone("")
     } catch (err) {
-      alert("Signup failed")
+      alert("Signup failed. Please try again.")
+    } finally {
+      setIsLoading(false)
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="bg-white p-6 rounded shadow-md w-full max-w-md">
-        <h1 className="text-lg font-bold mb-4">
-          {mode === "login" ? "Login" : "Sign Up"}
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-200 w-full max-w-md">
+        <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+          {mode === "login" ? "Welcome Back" : "Create an Account"}
         </h1>
 
         {mode === "signup" && (
           <>
-            <input
-              className="border p-2 w-full mb-1"
-              type="text"
-              placeholder="Full Name"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-            />
-            <input
-              className="border p-2 w-full mb-1"
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <p className="text-xs text-gray-500 mb-2">
-              {emailValid === "invalid" && "Invalid email format"}
-              {emailValid === "taken" && "Email is already taken"}
-              {emailValid === "valid" && "✅ Email is available"}
-            </p>
-            <input
-              className="border p-2 w-full mb-1"
-              type="text"
-              placeholder="Telephone"
-              value={telephone}
-              onChange={(e) => {
-                const val = e.target.value
-                console.log("typing:", val)
-                setTelephone(val)
-                console.log("telephone:", telephone)
-              }}
-            />
-            <p className="text-xs text-gray-500 mb-2">
-              {telephoneValid === "invalid" && "Invalid phone format (10–15 digits)"}
-              {telephoneValid === "taken" && "Phone number already in use"}
-              {telephoneValid === "valid" && "✅ Phone number looks good"}
-            </p>
+            <div className="mb-4">
+              <input
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                type="text"
+                placeholder="Full Name"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+              />
+            </div>
+            <div className="mb-4">
+              <input
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              {emailValid === "invalid" && <p className="text-red-500 text-sm mt-1">Invalid email format</p>}
+              {emailValid === "taken" && <p className="text-red-500 text-sm mt-1">Email already in use</p>}
+              {emailValid === "valid" && <p className="text-green-500 text-sm mt-1">Email available</p>}
+            </div>
+            <div className="mb-4">
+              <input
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                type="tel"
+                placeholder="Phone Number"
+                value={telephone}
+                onChange={(e) => setTelephone(e.target.value)}
+              />
+              {telephoneValid === "invalid" && <p className="text-red-500 text-sm mt-1">Invalid phone format</p>}
+              {telephoneValid === "taken" && <p className="text-red-500 text-sm mt-1">Phone already in use</p>}
+              {telephoneValid === "valid" && <p className="text-green-500 text-sm mt-1">Phone number is valid</p>}
+            </div>
           </>
         )}
 
         {mode === "login" && (
-          <>
+          <div className="mb-4">
             <input
-              className="border p-2 w-full mb-1"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               type="email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <p className="text-xs text-gray-500 mb-2">
-              {emailValid === "invalid" && "Invalid email format"}
-            </p>
-          </>
+          </div>
         )}
 
-        <input
-          className="border p-2 w-full mb-4"
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className="mb-6">
+          <input
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
 
         <button
-          className="bg-black text-white w-full py-2 rounded mb-2 disabled:opacity-50"
+          className={`w-full py-2 px-4 rounded-lg text-white font-medium ${
+            isLoading ? "bg-indigo-400 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700"
+          } transition-colors`}
           onClick={mode === "login" ? handleLogin : handleSignup}
           disabled={
-            mode === "signup" &&
-            (emailValid !== "valid" || telephoneValid !== "valid" || !fullName || !password)
+            isLoading ||
+            (mode === "signup" && (emailValid !== "valid" || telephoneValid !== "valid" || !fullName || !password))
           }
         >
-          {mode === "login" ? "Login" : "Sign Up"}
+          {isLoading ? "Processing..." : mode === "login" ? "Log In" : "Sign Up"}
         </button>
 
-        <p className="text-center text-sm">
+        <p className="text-center text-sm text-gray-600 mt-4">
           {mode === "login" ? (
             <>
               Don’t have an account?{" "}
               <button
-                className="text-blue-600 underline"
+                className="text-indigo-600 hover:text-indigo-800 font-medium"
                 onClick={() => setMode("signup")}
               >
                 Sign up
@@ -188,7 +197,7 @@ export default function LoginPage() {
             <>
               Already have an account?{" "}
               <button
-                className="text-blue-600 underline"
+                className="text-indigo-600 hover:text-indigo-800 font-medium"
                 onClick={() => setMode("login")}
               >
                 Log in
