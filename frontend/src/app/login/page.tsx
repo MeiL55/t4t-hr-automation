@@ -91,50 +91,58 @@ export default function LoginPage() {
     }
   }
 
+  const getInputBorder = (valid: "valid" | "invalid" | "taken" | null) => {
+    if (valid === "invalid" || valid === "taken") return "border-red-500"
+    if (valid === "valid") return "border-green-500"
+    return "border-gray-300"
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="bg-white p-6 rounded shadow-md w-full max-w-md">
-        <h1 className="text-lg font-bold mb-4">
-          {mode === "login" ? "Login" : "Sign Up"}
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h1 className="text-2xl font-bold text-center mb-2">
+          {mode === "login" ? "Welcome Back!" : "Create an Account"}
         </h1>
+        <p className="text-center text-gray-600 mb-6">
+          {mode === "login" ? "Sign in to continue" : "Join us today"}
+        </p>
 
         {mode === "signup" && (
           <>
             <input
-              className="border p-2 w-full mb-1"
+              className={`input-field ${getInputBorder(null)}`}
               type="text"
               placeholder="Full Name"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
             />
-            <input
-              className="border p-2 w-full mb-1"
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <p className="text-xs text-gray-500 mb-2">
+            <div className="relative">
+              <input
+                className={`input-field ${getInputBorder(emailValid)}`}
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              {emailValid === "valid" && <span className="validation-icon">✅</span>}
+            </div>
+            <p className="validation-message">
               {emailValid === "invalid" && "Invalid email format"}
               {emailValid === "taken" && "Email is already taken"}
-              {emailValid === "valid" && "✅ Email is available"}
             </p>
-            <input
-              className="border p-2 w-full mb-1"
-              type="text"
-              placeholder="Telephone"
-              value={telephone}
-              onChange={(e) => {
-                const val = e.target.value
-                console.log("typing:", val)
-                setTelephone(val)
-                console.log("telephone:", telephone)
-              }}
-            />
-            <p className="text-xs text-gray-500 mb-2">
+            <div className="relative">
+              <input
+                className={`input-field ${getInputBorder(telephoneValid)}`}
+                type="text"
+                placeholder="Telephone"
+                value={telephone}
+                onChange={(e) => setTelephone(e.target.value)}
+              />
+              {telephoneValid === "valid" && <span className="validation-icon">✅</span>}
+            </div>
+            <p className="validation-message">
               {telephoneValid === "invalid" && "Invalid phone format (10–15 digits)"}
               {telephoneValid === "taken" && "Phone number already in use"}
-              {telephoneValid === "valid" && "✅ Phone number looks good"}
             </p>
           </>
         )}
@@ -142,20 +150,20 @@ export default function LoginPage() {
         {mode === "login" && (
           <>
             <input
-              className="border p-2 w-full mb-1"
+              className={`input-field ${getInputBorder(emailValid)}`}
               type="email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <p className="text-xs text-gray-500 mb-2">
+            <p className="validation-message">
               {emailValid === "invalid" && "Invalid email format"}
             </p>
           </>
         )}
 
         <input
-          className="border p-2 w-full mb-4"
+          className="input-field"
           type="password"
           placeholder="Password"
           value={password}
@@ -163,7 +171,7 @@ export default function LoginPage() {
         />
 
         <button
-          className="bg-black text-white w-full py-2 rounded mb-2 disabled:opacity-50"
+          className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 disabled:opacity-50 transition-colors"
           onClick={mode === "login" ? handleLogin : handleSignup}
           disabled={
             mode === "signup" &&
@@ -173,12 +181,12 @@ export default function LoginPage() {
           {mode === "login" ? "Login" : "Sign Up"}
         </button>
 
-        <p className="text-center text-sm">
+        <p className="text-center text-sm mt-4">
           {mode === "login" ? (
             <>
               Don’t have an account?{" "}
               <button
-                className="text-blue-600 underline"
+                className="text-blue-600 hover:underline"
                 onClick={() => setMode("signup")}
               >
                 Sign up
@@ -188,7 +196,7 @@ export default function LoginPage() {
             <>
               Already have an account?{" "}
               <button
-                className="text-blue-600 underline"
+                className="text-blue-600 hover:underline"
                 onClick={() => setMode("login")}
               >
                 Log in

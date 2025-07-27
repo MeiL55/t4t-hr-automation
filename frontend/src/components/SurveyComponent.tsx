@@ -1,11 +1,12 @@
 "use client"
 
-import { useEffect, useState} from "react"
+import { useEffect, useState } from "react"
 import axios from "axios"
 import { Survey } from "survey-react-ui"
-import { Model, FunctionFactory } from "survey-core"
-import "survey-core/survey-core.min.css"
+import { Model, FunctionFactory, StylesManager } from "survey-core"
+import "survey-core/defaultV2.min.css"
 import { surveyJson } from "@/data/applyForm"
+import { surveyTheme } from "@/styles/surveyTheme"
 
 FunctionFactory.Instance.register("getAge", function (params: any[]): number {
   const birthdateStr = params[0]
@@ -20,8 +21,11 @@ FunctionFactory.Instance.register("getAge", function (params: any[]): number {
   return age
 })
 
+StylesManager.applyTheme("defaultV2")
+
 export default function SurveyComponent() {
   const [model] = useState(() => new Model(surveyJson))
+  model.applyTheme(surveyTheme)
 
   useEffect(() => {
     async function fetchAndInjectTelephone() {
