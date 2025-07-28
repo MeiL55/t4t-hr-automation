@@ -15,11 +15,14 @@ def batch_send_stage_emails():
     print("=== Running batch email sender ===")
     with SessionLocal() as db:
         applications = db.query(Application).filter(
-            Application.stage.in_(["rejected", "interview_1", "interview_2", "offer_sent"])
+            Application.stage.in_(["rejected_basic", "rejected_keyword", "rejected_interview", "rejected_other", "interview_1", "interview_2", "offer_sent"])
         ).all()
         sent = 0
         for app in applications:
-            if (app.stage == "rejected" and not app.rejection_email_sent) or \
+            if (app.stage == "rejected_basic" and not app.rejection_email_sent) or \
+               (app.stage == "rejected_keyword" and not app.rejection_email_sent) or \
+               (app.stage == "rejected_interview" and not app.rejection_email_sent) or \
+               (app.stage == "rejected_other" and not app.rejection_email_sent) or \
                (app.stage == "interview_1" and not app.interview_1_email_sent) or \
                (app.stage == "interview_2" and not app.interview_2_email_sent) or \
                (app.stage == "offer_sent" and not app.offer_email_sent):
