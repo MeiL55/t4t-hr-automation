@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "dependencies": {
     "clsx": "^2.1.0",         
-    "tailwind-merge": "^2.2.0", /
+    "tailwind-merge": "^2.2.0", 
     "axios": "^1.10.0",
     "debounce": "^2.2.0",
     "lodash.debounce": "^4.0.8",
