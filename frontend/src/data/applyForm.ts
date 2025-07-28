@@ -102,15 +102,16 @@ export const surveyJson = {
         {
           "type": "file",
           "name": "resume",
-          "title": "Upload Your Resume (PDF Preferred):",
-          "isRequired": false
-
+          "title": "Upload Your Resume (PDF Only):",
+          "description": "You may only upload once.",
+          "isRequired": true,
+          "storeDataAsText": true,
+          "maxSize": 2 * 1024 * 1024,
+          "acceptedTypes": ".pdf"
         },
         {
-          "type": "boolean",
-          "name": "accuracy",
-          "title": "I certify that the information provided is accurate to the best of my knowledge:",
-          "isRequired": true
+          "type": "hidden",
+          "name": "resume_filename"
         }
       ]
     }

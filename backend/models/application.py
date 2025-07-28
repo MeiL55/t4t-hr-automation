@@ -23,7 +23,7 @@ class Application(Base):
     # Applicant info
     date_of_birth = Column(Date, nullable=False)
     guardian_phone = Column(String, nullable=True)
-    resume_url = Column(String, nullable=False)
+    resume_filename = Column(String, nullable=False)
     gpa = Column(Float, nullable=True)
     us_based = Column(Boolean)
     has_criminal_record = Column(Boolean)
@@ -57,7 +57,7 @@ class Application(Base):
             name="check_edu_level"
         ),
         CheckConstraint(
-            "team_applied IN ('software', 'finance', 'media', 'outreach', 'special ops', 'human_resources', 'chapters')",
+            "team_applied IN ('software', 'finance', 'media', 'outreach', 'special_ops', 'human_resources', 'chapters')",
             name="check_team_applied"
         ),
         # Allowed values for stage

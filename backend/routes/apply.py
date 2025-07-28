@@ -37,7 +37,6 @@ def submit_application():
     db = SessionLocal()
 
     try:
-        resume_url = data.get("resume_url", "https://dummy.resume.com")
         resume_text_for_scoring = "experienced with python, flask, sql, and project management."
         team_applied = data["team_applied"]
         score = calculate_keyword_score(resume_text_for_scoring, team_applied)
@@ -49,7 +48,7 @@ def submit_application():
             us_based=data["us_based"],
             has_criminal_record=data["has_criminal_record"],
             education_level=data["education_level"],
-            resume_url=resume_url, 
+            resume_filename=data["resume_filename"], 
             team_applied=data["team_applied"],
             guardian_phone=data.get("guardian_phone"),
             school=data.get("school"),
