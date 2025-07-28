@@ -1,14 +1,9 @@
 {
   "name": "frontend",
   "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
   "dependencies": {
+    "clsx": "^2.1.0",         
+    "tailwind-merge": "^2.2.0", /
     "axios": "^1.10.0",
     "debounce": "^2.2.0",
     "lodash.debounce": "^4.0.8",
