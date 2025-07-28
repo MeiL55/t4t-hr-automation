@@ -5,7 +5,7 @@ import uuid
 import io
 from datetime import datetime
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-from backend.services.screening import screen_applications, calculate_keyword_score
+from backend.services.screening import calculate_keyword_score
 from dotenv import load_dotenv
 env_path = os.path.join(os.path.dirname(__file__), "..", "..", ".env")
 load_dotenv(dotenv_path=env_path)
@@ -54,9 +54,9 @@ def score_from_s3(filename, team_applied):
         # 1. get pdf from s3 by key(filename)
         response = s3.get_object(Bucket=bucket, Key=key)
         file_bytes = response["Body"].read()
-        print(file_bytes)
+        #print(file_bytes)
         # 2. call scoring function
-        calculate_keyword_score(file_bytes, team_applied)
+        return calculate_keyword_score(file_bytes, team_applied)
     except Exception as e:
         print("Error scoring resume:", e)
         raise

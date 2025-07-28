@@ -14,52 +14,12 @@ from typing import Optional
 
 MIN_GPA = 2.0
 AGE_RANGE = (15, 23)
-EDU_LEVELS_ALLOWED = ['high_school', 'bachelors'] 
+EDU_LEVELS_ALLOWED = ['high_school', 'bachelors']
+MIN_KEYWORD_SCORE = 20
 
 def calculate_age(dob: date) -> int:
     today = date.today()
     return today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
-
-def is_hard_disqualified(app: Application) -> bool:
-    age = calculate_age(app.date_of_birth) if app.date_of_birth else None
-    disqualified = (
-        app.gpa is not None and app.gpa < MIN_GPA or
-        not app.us_based or
-        age is None or age < AGE_RANGE[0] or age > AGE_RANGE[1] or
-        app.has_criminal_record or
-        app.education_level not in EDU_LEVELS_ALLOWED
-    )
-    print(f"Disqualified Check: {disqualified}")
-    return disqualified
-#we are creating another function because that cannot be dealed within one step
-def is_keyword_disqualified(score: Optional[int]) -> bool:
-    return score is not None and score < 20
-
-def screen_applications(app: Application, db: Session) -> str:
-    """
-    This is the main screening function that decides if a candidate
-    is rejected or moved to the first interview stage.
-    """
-    print(f"--- Running screening for application ID: {app.id} ---")
-    
-    if is_hard_disqualified(app):
-        app.stage = 'rejected'
-        db.add(app)
-        print("Application REJECTED based on initial criteria.")
-        #send_email_for_stage(app, db) 
-    elif is_keyword_disqualified(app.keyword_score):
-        app.stage = 'rejected'
-        print("Application REJECTED: low keyword score.")
-        #send_email_for_stage(app, db) 
-    else:
-        app.stage = 'interview_1'
-        db.add(app)
-        print("Application PASSED to interview stage.")
-        #send_email_for_stage(app, db) 
-        
-    db.commit() 
-    print(f"--- Screening complete for application ID: {app.id} ---")
-    return app.id
 
 
 def parse_resume_keywords(pdf_bytes: bytes) -> str:
@@ -97,5 +57,47 @@ def calculate_keyword_score(pdf_bytes: bytes, role: str):
             score += points
             print(f"  + Found keyword '{keyword.lower()}' for {points} points.")
     print(f"Total Keyword Score: {score}")
-
     return score
+
+def screen_basic_filters(app: Application, db: Session) -> bool:
+    """Screen application against hard filters"""
+    print(f"--- Running basic screening for application ID: {app.id} ---")
+    age = calculate_age(app.date_of_birth) if app.date_of_birth else None
+    disqualified = (
+        app.gpa is not None and app.gpa < MIN_GPA or
+        not app.us_based or
+        age is None or age < AGE_RANGE[0] or age > AGE_RANGE[1] or
+        app.has_criminal_record or
+        app.education_level not in EDU_LEVELS_ALLOWED
+    )
+    if disqualified:
+        print("Basic screening FAILED")
+        app.stage = 'rejected_basic'
+        db.add(app)
+        db.commit()
+        return False
+    else:
+        print("Basic screening PASSED - moving to keyword screening phase")
+        app.stage = 'pending_keyword'
+        db.add(app)
+        db.commit()
+        return True
+
+def screen_keyword_requirements(app: Application, db: Session) -> bool:
+    """Screen application against keyword score requirements"""
+    print(f"--- Running keyword screening for application ID: {app.id} ---")
+    if app.keyword_score is None:
+        print("ERROR: Keyword score not available")
+        return False
+    if app.keyword_score < MIN_KEYWORD_SCORE:
+        print(f"Keyword screening FAILED: score {app.keyword_score}")
+        app.stage = 'rejected_keyword'
+        db.add(app)
+        db.commit()
+        return False
+    else:
+        print(f"Keyword screening PASSED: score {app.keyword_score}")
+        app.stage = 'interview_1'
+        db.add(app)
+        db.commit()
+        return True

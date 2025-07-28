@@ -14,8 +14,8 @@ from flask import Blueprint, request, jsonify
 from backend.utils.auth_utils import token_required
 
 #import the new scoring and parsing functions
-from backend.services.screening import screen_applications, parse_resume_keywords, calculate_keyword_score
-
+from backend.services.screening import screen_basic_filters, parse_resume_keywords, calculate_keyword_score
+from backend.tasks.resume_processing import process_resume_and_screen
 user_bp = Blueprint("user", __name__)
 
 @user_bp.route("/api/user_info", methods=["GET"])
@@ -52,13 +52,14 @@ def submit_application():
             team_applied=data["team_applied"],
             guardian_phone=data.get("guardian_phone"),
             school=data.get("school"),
-            keyword_score=score # Pass the calculated score here
+            keyword_score=None #default to null for now
         )
         
         db.add(app)
         db.commit()
-        screen_applications(app, db)
-        return jsonify({"message": "Application submitted and parsed."}), 200
+        screen_basic_filters(app, db)           #1. basic filters - gpa, age, degree
+        process_resume_and_screen.delay(app.id) #2. keyword scoring - trigger celery
+        return jsonify({"message": "Application submitted and queued for scoring"}), 200
     except Exception as e:
         import traceback
         traceback.print_exc()
