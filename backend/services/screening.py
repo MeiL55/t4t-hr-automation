@@ -3,11 +3,13 @@ import os
 import json
 from datetime import date
 from sqlalchemy.orm import Session
+from io import BytesIO
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from backend.models.user import User
 from backend.models.application import Application
 from backend.services.send_email_stages import send_email_for_stage
 from pdfminer.high_level import extract_text
+from typing import Optional
 
 
 MIN_GPA = 2.0
@@ -18,20 +20,20 @@ def calculate_age(dob: date) -> int:
     today = date.today()
     return today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
 
-def is_disqualified(app: Application) -> bool:
+def is_hard_disqualified(app: Application) -> bool:
     age = calculate_age(app.date_of_birth) if app.date_of_birth else None
-    score = calculate_keyword_score("../tests/oz_resume.pdf", app.team_applied) #keep path as dummy
-    score = app.keyword_score
     disqualified = (
         app.gpa is not None and app.gpa < MIN_GPA or
         not app.us_based or
         age is None or age < AGE_RANGE[0] or age > AGE_RANGE[1] or
         app.has_criminal_record or
-        app.education_level not in EDU_LEVELS_ALLOWED or
-        score < 20
+        app.education_level not in EDU_LEVELS_ALLOWED
     )
     print(f"Disqualified Check: {disqualified}")
     return disqualified
+#we are creating another function because that cannot be dealed within one step
+def is_keyword_disqualified(score: Optional[int]) -> bool:
+    return score is not None and score < 20
 
 def screen_applications(app: Application, db: Session) -> str:
     """
@@ -40,10 +42,14 @@ def screen_applications(app: Application, db: Session) -> str:
     """
     print(f"--- Running screening for application ID: {app.id} ---")
     
-    if is_disqualified(app):
+    if is_hard_disqualified(app):
         app.stage = 'rejected'
         db.add(app)
         print("Application REJECTED based on initial criteria.")
+        #send_email_for_stage(app, db) 
+    elif is_keyword_disqualified(app.keyword_score):
+        app.stage = 'rejected'
+        print("Application REJECTED: low keyword score.")
         #send_email_for_stage(app, db) 
     else:
         app.stage = 'interview_1'
@@ -56,23 +62,23 @@ def screen_applications(app: Application, db: Session) -> str:
     return app.id
 
 
-def parse_resume_keywords(path: str) -> str:
+def parse_resume_keywords(pdf_bytes: bytes) -> str:
     """
     Parses a local PDF resume and returns the text content.
     """
     try:
-        text = extract_text(path)
+        text = extract_text(BytesIO(pdf_bytes))
         return text.lower()
     except Exception as e:
         print(f"ERROR: Failed to parse resume. Reason: {e}")
         return ""
 
-def calculate_keyword_score(path, role):
+def calculate_keyword_score(pdf_bytes: bytes, role: str):
     """
     Calculates a score for a resume based on keywords for a specific role.
     """
     score = 0
-    resume_text_lower = parse_resume_keywords(path)
+    resume_text_lower = parse_resume_keywords(pdf_bytes)
     role_key = role
     keywords_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'role_keywords.json')
     try:

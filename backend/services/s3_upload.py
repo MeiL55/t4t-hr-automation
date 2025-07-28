@@ -1,9 +1,11 @@
-import os
+import os,sys
 import base64
 import boto3
 import uuid
 import io
 from datetime import datetime
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+from backend.services.screening import screen_applications, calculate_keyword_score
 from dotenv import load_dotenv
 env_path = os.path.join(os.path.dirname(__file__), "..", "..", ".env")
 load_dotenv(dotenv_path=env_path)
@@ -42,4 +44,19 @@ def upload_resume_to_s3(resume_obj):
         return filename
     except Exception as e:
         print("Resume upload failed:", e)
+        raise
+
+#get pdf file from the s3 by filename
+def score_from_s3(filename, team_applied):
+    bucket = S3_BUCKET_NAME
+    key = filename
+    try:
+        # 1. get pdf from s3 by key(filename)
+        response = s3.get_object(Bucket=bucket, Key=key)
+        file_bytes = response["Body"].read()
+        print(file_bytes)
+        # 2. call scoring function
+        calculate_keyword_score(file_bytes, team_applied)
+    except Exception as e:
+        print("Error scoring resume:", e)
         raise
