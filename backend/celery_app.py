@@ -11,7 +11,7 @@ celery_app = Celery(
     "internship_screening",
     broker=REDIS_URL,
     backend=REDIS_URL,
-    include=['backend.tasks.resume_processing']
+    include=['backend.tasks.resume_processing', 'backend.tasks.email_batch']
 )
 # Celery configuration
 celery_app.conf.update(

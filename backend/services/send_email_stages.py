@@ -22,8 +22,7 @@ def send_email_for_stage(applicant: Application, db):
     elif stage == "offer_sent" and not applicant.offer_email_sent:
         send_offer_email(applicant)
         applicant.offer_email_sent = True
-    elif stage == "rejected" and not applicant.rejection_email_sent:
-        print("email sent?")
+    elif (stage == "rejected_basic" or stage == "rejected_keyword" or stage == "rejected_interview" or stage == "rejected_other") and not applicant.rejection_email_sent:
         send_rejection_email(applicant)
         applicant.rejection_email_sent = True
     db.add(applicant)
