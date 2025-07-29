@@ -1,102 +1,193 @@
-import Image from "next/image";
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import "@/app/globals.css";
+
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isVisible, setIsVisible] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+  useEffect(() => {
+    setIsVisible(true);
+    
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  // Reusable Card Component
+  const Card = ({ children, className = '' }: { children: React.ReactNode, className?: string }) => (
+    <div className={`relative bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 hover:bg-white/15 transition-all duration-300 ${className}`}>
+      {children}
+    </div>
+  );
+
+  // Reusable Button Component
+  const Button = ({ children, variant = 'primary', className = '', ...props }: { children: React.ReactNode, variant?: 'primary' | 'secondary', className?: string, [key: string]: any }) => (
+    <button
+      className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
+        variant === 'primary' 
+          ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-500 hover:to-pink-500 shadow-lg hover:shadow-purple-500/30' 
+          : 'bg-white/10 text-white border border-white/20 hover:bg-white/20'
+      } ${className}`}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-900 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="fixed inset-0 -z-10">
+        <div 
+          className="absolute w-[40rem] h-[40rem] bg-gradient-to-r from-purple-600/30 to-pink-600/30 rounded-full mix-blend-soft-light filter blur-[100px] animate-pulse"
+          style={{
+            left: `${mousePosition.x * 0.05}px`,
+            top: `${mousePosition.y * 0.05}px`,
+          }}
+        />
+        <div className="absolute top-1/4 right-1/4 w-[30rem] h-[30rem] bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-full mix-blend-soft-light filter blur-[100px] animate-pulse" 
+             style={{ animationDelay: '1s' }} />
+        <div className="absolute bottom-1/4 left-1/3 w-[25rem] h-[25rem] bg-gradient-to-r from-pink-600/20 to-rose-600/20 rounded-full mix-blend-soft-light filter blur-[100px] animate-pulse" 
+             style={{ animationDelay: '2s' }} />
+      </div>
+
+      <main className="min-h-screen container mx-auto px-4 py-20">
+        {/* Hero Section */}
+        <section className={`text-center mb-20 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <div className="relative mb-8">
+            <h1 className="text-6xl md:text-8xl font-black mb-6 bg-gradient-to-r from-purple-300 via-pink-300 to-blue-300 bg-clip-text text-transparent">
+              Teens 4 Teens
+            </h1>
+            <p className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto font-light leading-relaxed">
+              Join our team and make a <span className="text-pink-300 font-semibold">difference</span> in your community!
+            </p>
+          </div>
+        </section>
+
+        {/* Application CTA */}
+        <section className={`w-full max-w-2xl mx-auto mb-20 transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <Card className="p-8 border-white/30">
+            <div className="text-center">
+              <h2 className="text-3xl font-bold text-white mb-4">Start Your Journey</h2>
+              <p className="text-white/80 mb-8 text-lg leading-relaxed">
+                We're looking for passionate teens to join our team. The application takes just 5 minutes to complete.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link href="/login" passHref>
+                  <Button className="px-8 py-4 text-lg">
+                    Apply Now
+                  </Button>
+                </Link>
+                <Link href="https://www.teens4teens.net" passHref>
+                  <Button variant="secondary" className="px-8 py-4 text-lg">
+                    Learn More
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </Card>
+        </section>
+
+        {/* Benefits Section */}
+        <section className={`mb-20 transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <h2 className="text-3xl font-bold text-center text-white mb-12">
+            Why Join Our Team?
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            {[
+              {
+                title: "Skill Development",
+                description: "Gain valuable professional skills that will help you in college and beyond.",
+                icon: "📈",
+                color: "bg-gradient-to-r from-blue-400 to-purple-500"
+              },
+              {
+                title: "Community Impact",
+                description: "Make a real difference in the lives of other teens in your community.",
+                icon: "🤝",
+                color: "bg-gradient-to-r from-purple-500 to-pink-500"
+              },
+              {
+                title: "Networking",
+                description: "Connect with like-minded peers and professionals in your field of interest.",
+                icon: "🌐",
+                color: "bg-gradient-to-r from-pink-500 to-rose-500"
+              }
+            ].map((benefit, index) => (
+              <Card key={index} className="p-6 h-full hover:border-white/40">
+                <div className={`w-16 h-16 rounded-full ${benefit.color} flex items-center justify-center text-2xl mb-4 mx-auto`}>
+                  {benefit.icon}
+                </div>
+                <h3 className="text-xl font-bold text-white text-center mb-3">{benefit.title}</h3>
+                <p className="text-white/80 text-center">{benefit.description}</p>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        {/* Application Steps */}
+        <section className={`mb-20 transition-all duration-1000 delay-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <h2 className="text-3xl font-bold text-center text-white mb-12">
+            Simple Application Process
+          </h2>
+          <div className="flex flex-col md:flex-row gap-8 max-w-7xl mx-auto">
+            {[
+              {
+                step: "1",
+                title: "Complete the Form",
+                description: "Fill out our simple online application"
+              },
+              {
+                step: "2",
+                title: "Interviews",
+                description: "Two rounds of 15-20 minute interviews with our team"
+              },
+              {
+                step: "3",
+                title: "Get Started",
+                description: "Begin your journey with Teens 4 Teens"
+              }
+            ].map((step, index) => (
+              <div key={index} className="flex-1">
+                <Card className="p-6 text-center hover:border-white/40">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-xl mb-4 mx-auto">
+                    {step.step}
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-2">{step.title}</h3>
+                  <p className="text-white/80">{step.description}</p>
+                </Card>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Final CTA */}
+        <section className="py-12 rounded-2xl bg-gradient-to-r from-purple-900/50 to-pink-900/50 border border-white/20 mb-20">
+          <div className="container mx-auto px-4 text-center">
+            <h2 className="text-3xl font-bold text-white mb-6">Ready to Make a Difference?</h2>
+            <Link href="/apply" passHref>
+              <Button className="px-8 py-4 text-lg mx-auto">
+                Start Your Application
+              </Button>
+            </Link>
+          </div>
+        </section>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+
+      {/* Footer */}
+      <footer className="py-8 text-center border-t border-white/10 bg-gradient-to-b from-transparent to-black/30">
+        <div className="container mx-auto px-4">
+          <p className="text-white/60 text-sm">
+            © {new Date().getFullYear()} Teens 4 Teens. All rights reserved.
+          </p>
+        </div>
       </footer>
     </div>
   );
