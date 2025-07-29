@@ -96,7 +96,7 @@ export const surveyJson = {
           "description": "You may only upload once.",
           "isRequired": true,
           "storeDataAsText": true,
-          "maxSize":  2 * 1024 * 1024,,
+          "maxSize": 2 * 1024 * 1024,
           "acceptedTypes": ".pdf"
         },
         {

@@ -44,13 +44,37 @@ export default function SurveyComponent() {
     }
     fetchAndInjectTelephone()
   }, [model])
+  model.onValueChanged.add(async (sender, options) => {
+    if (options.name === "resume") {
+      const token = localStorage.getItem("token");
+      const resumeList = options.value;
+      if (!resumeList || !resumeList.length) return;
+      const resume = resumeList[0];
+      console.log(resume);
+      try {
+        const uploadRes = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/upload_resume`,
+          { resume },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        const resume_filename = uploadRes.data.resume_filename;
+        sender.setValue("resume_filename", resume_filename);
+        sender.setValue("resume", { name: "uploaded.pdf", uploaded: true });
+        console.log("Resume uploaded:", resume_filename);
+        const q = sender.getQuestionByName("resume");
+        q.readOnly = true;
+        q.description = "Resume uploaded successfully.";
+      } catch (err) {
+        console.error("Resume upload failed", err);
+        alert("Resume upload failed. Try again.");
+      }
+    }
+  });
   model.onComplete.add(async (sender) => {
     const data = sender.data
     console.log("Survey submitted:", data)
-
+    const token = localStorage.getItem("token")
     try {
-      const token = localStorage.getItem("token")
-
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/api/application`, data,
         {

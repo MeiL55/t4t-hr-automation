@@ -54,14 +54,12 @@ def send_interview1_email(application):
 
 def send_interview2_email(application):
     subject = "Second Round Interview - Teens4Teens"
-    #calendly_link = "https://calendly.com/your-second-round-link"  # Update or inject dynamically
     html_body = render_template("interview_2.html", name=application.user.full_name)
     send_email(application.user.email, subject, html_body)
 
 
 def send_offer_email(application):
     subject = "🎉 You're In! Teens4Teens Internship Offer"
-    #slack_link = "https://join.slack.com/your-slack-link"  # Replace with real link
     html_body = render_template("offer.html", name=application.user.full_name)
     send_email(application.user.email, subject, html_body)
 

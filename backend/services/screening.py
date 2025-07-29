@@ -3,76 +3,42 @@ import os
 import json
 from datetime import date
 from sqlalchemy.orm import Session
+from io import BytesIO
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from backend.models.user import User
 from backend.models.application import Application
 from backend.services.send_email_stages import send_email_for_stage
 from pdfminer.high_level import extract_text
+from typing import Optional
 
 
 MIN_GPA = 2.0
 AGE_RANGE = (15, 23)
-EDU_LEVELS_ALLOWED = ['high_school', 'bachelors'] 
+EDU_LEVELS_ALLOWED = ['high_school', 'bachelors']
+MIN_KEYWORD_SCORE = 20
 
 def calculate_age(dob: date) -> int:
     today = date.today()
     return today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
 
-def is_disqualified(app: Application) -> bool:
-    age = calculate_age(app.date_of_birth) if app.date_of_birth else None
-    score = calculate_keyword_score("../tests/oz_resume.pdf", app.team_applied) #keep path as dummy
-    score = app.keyword_score
-    disqualified = (
-        app.gpa is not None and app.gpa < MIN_GPA or
-        not app.us_based or
-        age is None or age < AGE_RANGE[0] or age > AGE_RANGE[1] or
-        app.has_criminal_record or
-        app.education_level not in EDU_LEVELS_ALLOWED or
-        score < 20
-    )
-    print(f"Disqualified Check: {disqualified}")
-    return disqualified
 
-def screen_applications(app: Application, db: Session) -> str:
-    """
-    This is the main screening function that decides if a candidate
-    is rejected or moved to the first interview stage.
-    """
-    print(f"--- Running screening for application ID: {app.id} ---")
-    
-    if is_disqualified(app):
-        app.stage = 'rejected'
-        db.add(app)
-        print("Application REJECTED based on initial criteria.")
-        #send_email_for_stage(app, db) 
-    else:
-        app.stage = 'interview_1'
-        db.add(app)
-        print("Application PASSED to interview stage.")
-        #send_email_for_stage(app, db) 
-        
-    db.commit() 
-    print(f"--- Screening complete for application ID: {app.id} ---")
-    return app.id
-
-
-def parse_resume_keywords(path: str) -> str:
+def parse_resume_keywords(pdf_bytes: bytes) -> str:
     """
     Parses a local PDF resume and returns the text content.
     """
     try:
-        text = extract_text(path)
+        text = extract_text(BytesIO(pdf_bytes))
         return text.lower()
     except Exception as e:
         print(f"ERROR: Failed to parse resume. Reason: {e}")
         return ""
 
-def calculate_keyword_score(path, role):
+def calculate_keyword_score(pdf_bytes: bytes, role: str):
     """
     Calculates a score for a resume based on keywords for a specific role.
     """
     score = 0
-    resume_text_lower = parse_resume_keywords(path)
+    resume_text_lower = parse_resume_keywords(pdf_bytes)
     role_key = role
     keywords_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'role_keywords.json')
     try:
@@ -91,5 +57,47 @@ def calculate_keyword_score(path, role):
             score += points
             print(f"  + Found keyword '{keyword.lower()}' for {points} points.")
     print(f"Total Keyword Score: {score}")
-
     return score
+
+def screen_basic_filters(app: Application, db: Session) -> bool:
+    """Screen application against hard filters"""
+    print(f"--- Running basic screening for application ID: {app.id} ---")
+    age = calculate_age(app.date_of_birth) if app.date_of_birth else None
+    disqualified = (
+        app.gpa is not None and app.gpa < MIN_GPA or
+        not app.us_based or
+        age is None or age < AGE_RANGE[0] or age > AGE_RANGE[1] or
+        app.has_criminal_record or
+        app.education_level not in EDU_LEVELS_ALLOWED
+    )
+    if disqualified:
+        print("Basic screening FAILED")
+        app.stage = 'rejected_basic'
+        db.add(app)
+        db.commit()
+        return False
+    else:
+        print("Basic screening PASSED - moving to keyword screening phase")
+        app.stage = 'pending_keyword'
+        db.add(app)
+        db.commit()
+        return True
+
+def screen_keyword_requirements(app: Application, db: Session) -> bool:
+    """Screen application against keyword score requirements"""
+    print(f"--- Running keyword screening for application ID: {app.id} ---")
+    if app.keyword_score is None:
+        print("ERROR: Keyword score not available")
+        return False
+    if app.keyword_score < MIN_KEYWORD_SCORE:
+        print(f"Keyword screening FAILED: score {app.keyword_score}")
+        app.stage = 'rejected_keyword'
+        db.add(app)
+        db.commit()
+        return False
+    else:
+        print(f"Keyword screening PASSED: score {app.keyword_score}")
+        app.stage = 'interview_1'
+        db.add(app)
+        db.commit()
+        return True
