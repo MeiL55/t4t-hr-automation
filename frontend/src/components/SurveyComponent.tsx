@@ -5,6 +5,7 @@ import axios from "axios"
 import { Survey } from "survey-react-ui"
 import { Model, FunctionFactory } from "survey-core"
 import "survey-core/survey-core.min.css"
+import "@/app/globals.css"
 import { surveyJson } from "@/data/applyForm"
 
 FunctionFactory.Instance.register("getAge", function (params: any[]): number {
@@ -65,8 +66,9 @@ export default function SurveyComponent() {
     }
  })
   return (
-    <div className="max-w-2xl mx-auto my-10">
-      <Survey model={model} />
-    </div>
-  )
+  <div className="max-w-3xl mx-auto my-10 p-8 rounded-3xl shadow-2xl bg-gradient-to-br from-fuchsia-600 via-purple-600 to-indigo-600">
+    <Survey model={model} />
+  </div>
+)
+
 }
