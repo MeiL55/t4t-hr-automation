@@ -14,4 +14,4 @@ def test_parse_oz_resume():
     print("Score:", score)
 
 #test_parse_oz_resume()
-score_from_s3("cv_for_coop (3).pdf", "software")
+score_from_s3("1db099e4-1805-42df-8f0a-1f08707c86f0_cv_for_coop.pdf", "software")

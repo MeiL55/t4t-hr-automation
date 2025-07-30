@@ -54,6 +54,7 @@ def score_from_s3(filename, team_applied):
         # 1. get pdf from s3 by key(filename)
         response = s3.get_object(Bucket=bucket, Key=key)
         file_bytes = response["Body"].read()
+        assert isinstance(file_bytes, bytes), f"Expected bytes, got {type(file_bytes)}"
         #print(file_bytes)
         # 2. call scoring function
         return calculate_keyword_score(file_bytes, team_applied)
