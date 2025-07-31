@@ -61,3 +61,15 @@ def score_from_s3(filename, team_applied):
     except Exception as e:
         print("Error scoring resume:", e)
         raise
+
+def generate_presigned_resume_url(key: str, expires: int = 7200) -> str:
+    try:
+        url = s3.generate_presigned_url(
+            ClientMethod="get_object",
+            Params={"Bucket": S3_BUCKET_NAME, "Key": key},
+            ExpiresIn=expires
+        )
+        return url
+    except Exception as e:
+        print("URL generation failed:", e)
+        return ""

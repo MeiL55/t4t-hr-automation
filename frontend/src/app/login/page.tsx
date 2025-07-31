@@ -85,7 +85,7 @@ export default function LoginPage() {
             headers: { Authorization: `Bearer ${token}` }
           });
           const status = res.data.status;
-          if (status == 'non_started') {
+          if (status == 'not_started') {
             router.push("/apply");
           } else {
             router.push(`/applystage?status=${status}`);

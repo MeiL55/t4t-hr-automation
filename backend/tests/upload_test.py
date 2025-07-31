@@ -32,7 +32,7 @@ try:
         )
     print(f"Upload success, s3 key: {file_key}")
 except Exception as e:
-    print("Upload fialed：", e)
+    print("Upload failed：", e)
 
 try:
     url = s3.generate_presigned_url(
