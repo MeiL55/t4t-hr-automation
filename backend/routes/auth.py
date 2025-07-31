@@ -3,10 +3,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.exc import IntegrityError
 import sys, os
 import jwt
+from jwt import InvalidTokenError
 from datetime import datetime, timedelta
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from backend.models.database import SessionLocal
 from backend.models.user import User
+from backend.models.application import Application
 from dotenv import load_dotenv
 env_path = os.path.join(os.path.dirname(__file__), "..", "..", ".env")
 load_dotenv(dotenv_path=env_path)
@@ -84,3 +86,23 @@ def check_telephone():
     db = SessionLocal()
     exists = db.query(User).filter_by(telephone=telephone).first()
     return jsonify({"available": exists is None})
+
+@auth_bp.route("/api/application_status", methods=["GET"])
+def application_status():
+    auth_header = request.headers.get("Authorization")
+    if not auth_header or not auth_header.startswith("Bearer "):
+        return jsonify({"error": "Missing or invalid token"}), 401
+    token = auth_header.split(" ")[1]
+    try:
+        payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=["HS256"])
+    except InvalidTokenError:
+        return jsonify({"error": "Invalid or expired token"}), 401
+    user_id = payload.get("user_id")
+    if not user_id:
+        return jsonify({"error": "Invalid token payload"}), 401
+    db = SessionLocal()
+    application = db.query(Application).filter_by(user_id=user_id).first()
+    if application:
+        return jsonify({ "status": application.stage })
+    else:
+        return jsonify({ "status": "not_started" })

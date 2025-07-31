@@ -80,7 +80,17 @@ export default function LoginPage() {
         
         if (role === "hr") router.push("/hr_dashboard")
         else if (role === "admin") router.push("/admin_panel")
-        else if (role === "applicant") router.push("/apply")
+        else if (role === "applicant") {
+          const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/application_status`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          const status = res.data.status;
+          if (status == 'non_started') {
+            router.push("/apply");
+          } else {
+            router.push(`/applystage?status=${status}`);
+          }
+        }
         else router.push("/unauthorized")
       } else {
         await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/signup`, {
