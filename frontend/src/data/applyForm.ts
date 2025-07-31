@@ -102,6 +102,13 @@ export const surveyJson = {
         {
           "type": "hidden",
           "name": "resume_filename"
+        },
+        {
+          "type": "text",
+          "name": "referralCode",
+          "title": "Referral Code (Optional)",
+          "isRequired": false,
+          "placeHolder": "If you have a referral code, enter it here"
         }
       ]
     }

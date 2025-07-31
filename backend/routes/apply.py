@@ -14,7 +14,7 @@ from flask import Blueprint, request, jsonify
 from backend.utils.auth_utils import token_required
 
 #import the new scoring and parsing functions
-from backend.services.screening import screen_basic_filters, parse_resume_keywords, calculate_keyword_score
+from backend.services.screening import screen_basic_filters, check_valid_referral, calculate_keyword_score
 from backend.tasks.resume_processing import process_resume_and_screen
 user_bp = Blueprint("user", __name__)
 
@@ -37,10 +37,10 @@ def submit_application():
     db = SessionLocal()
 
     try:
-        resume_text_for_scoring = "experienced with python, flask, sql, and project management."
-        team_applied = data["team_applied"]
-        score = calculate_keyword_score(resume_text_for_scoring, team_applied)
-        # Create the application with the new keyword_score
+        #resume_text_for_scoring = "experienced with python, flask, sql, and project management."
+        #team_applied = data["team_applied"]
+        #score = calculate_keyword_score(resume_text_for_scoring, team_applied)
+        referral = check_valid_referral(data["referral"])
         app = Application(
             user_id=user.id,
             date_of_birth=data["date_of_birth"],
@@ -52,7 +52,8 @@ def submit_application():
             team_applied=data["team_applied"],
             guardian_phone=data.get("guardian_phone"),
             school=data.get("school"),
-            keyword_score=None #default to null for now
+            referral=referral,
+            keyword_score=5 if referral else 0,
         )
         
         db.add(app)

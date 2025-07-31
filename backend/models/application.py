@@ -26,6 +26,7 @@ class Application(Base):
     education_level = Column(String)
     school = Column(String)
     team_applied = Column(String)
+    referral = Column(Boolean, default=False)
     # Keyword screening score (nullable until Celery task completes)
     keyword_score = Column(Integer, nullable=True)
     # Stage: Updated to support separate screening phases

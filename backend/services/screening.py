@@ -17,10 +17,12 @@ AGE_RANGE = (15, 23)
 EDU_LEVELS_ALLOWED = ['high_school', 'bachelors']
 MIN_KEYWORD_SCORE = 20
 
+def check_valid_referral(referral: str) -> bool:
+    valid_code = "internfall25"
+    return referral == valid_code
 def calculate_age(dob: date) -> int:
     today = date.today()
     return today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
-
 
 def parse_resume_keywords(pdf_bytes: bytes) -> str:
     """
