@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify
 import sys,os
+from flask import request
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from backend.models.database import SessionLocal
 from backend.models.application import Application
@@ -18,7 +19,7 @@ def get_interview_stage_applications():
     try:
         apps = (
             db.query(Application)
-            .filter(Application.stage.in_(['interview_1', 'interview_2']))
+            .filter(Application.stage.in_(['interview_1', 'interview_2', 'rejected_interview']))
             .all()
         )
         results = []
@@ -28,12 +29,39 @@ def get_interview_stage_applications():
                 "user_id": app.user.id,
                 "name": app.user.full_name,
                 "email": app.user.email,
+                "telephone": app.user.telephone,
                 "stage": app.stage,
                 "resume_filename": app.resume_filename,
                 "resume_url": generate_presigned_resume_url(app.resume_filename, expires=7200)
             })
         return jsonify(results)
     except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        db.close()
+
+@hr_dashboard_bp.route('/api/update_stage', methods=['POST'])
+def update_application_stage():
+    db = SessionLocal()
+    try:
+        data = request.get_json()
+        #print("Received JSON:", data)
+        application_id = data.get('application_id')
+        new_stage = data.get('new_stage')
+        print("Updating application", application_id, "→", new_stage)
+        if not application_id or not new_stage:
+            print("Missing data")
+            return jsonify({"error": "Missing fields"}), 400
+        app = db.query(Application).filter_by(id=application_id).first()
+        if not app:
+            print("Application not found")
+            return jsonify({"error": "Application not found"}), 404
+        app.stage = new_stage
+        db.commit()
+        return jsonify({"success": True})
+    except Exception as e:
+        db.rollback()
+        print("Exception occurred:", str(e))
         return jsonify({"error": str(e)}), 500
     finally:
         db.close()
