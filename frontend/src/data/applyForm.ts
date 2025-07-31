@@ -105,7 +105,7 @@ export const surveyJson = {
         },
         {
           "type": "text",
-          "name": "referralCode",
+          "name": "referral",
           "title": "Referral Code (Optional)",
           "isRequired": false,
           "placeHolder": "If you have a referral code, enter it here"

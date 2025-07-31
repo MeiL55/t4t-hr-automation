@@ -32,7 +32,7 @@ def process_resume_and_screen(self, id: int):
         try:
             keyword_score = score_from_s3(app.resume_filename, app.team_applied)
             # Update application with score
-            app.keyword_score = keyword_score
+            app.keyword_score += keyword_score
             db.add(app)
             db.commit()
             print(f"Keyword score calculated: {keyword_score} for application {id}")

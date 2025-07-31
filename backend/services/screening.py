@@ -15,7 +15,7 @@ from typing import Optional
 MIN_GPA = 2.0
 AGE_RANGE = (15, 23)
 EDU_LEVELS_ALLOWED = ['high_school', 'bachelors']
-MIN_KEYWORD_SCORE = 20
+MIN_KEYWORD_SCORE = 25
 
 def check_valid_referral(referral: str) -> bool:
     valid_code = "internfall25"
