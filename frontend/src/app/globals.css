@@ -17,10 +17,10 @@
     /* For SurveyJS (keep existing) */
     --sjs-main-backcolor: hsl(210, 80%, 95%);
     --sjs-page-background-color: hsl(210, 80%, 95%);
-    --sjs-main-color: hsl(340, 80%, 35%);
-    --sjs-primary-text-color: hsl(340, 80%, 40%);
-    --sjs-primary-backcolor: hsl(340, 80%, 50%);
-    --sjs-primary-hover-backcolor: hsl(340, 90%, 45%);
+    --sjs-main-color: #f67460;;
+    --sjs-primary-text-color: #f67460;;
+    --sjs-primary-backcolor: #f67460;
+    --sjs-primary-hover-backcolor: #f67460;
     --sjs-font-family: "Poppins", sans-serif;
   }
 
@@ -47,19 +47,20 @@
   
   /* Homepage gradient */
   .bg-gradient-brand {
-    background: linear-gradient(
-      135deg,
-      rgb(var(--color-brand-purple)),
-      rgb(var(--color-brand-pink)),
-      rgb(var(--color-brand-green))
-    );
-  }
+  background: linear-gradient(
+    135deg,
+    rgb(5, 150, 105),
+    rgb(var(--color-brand-green)),
+    rgb(190, 242, 230)
+  );
+}
+
   
   /* Homepage text gradient */
   .text-gradient-brand {
     background: linear-gradient(
       90deg,
-      rgb(var(--color-brand-purple)),
+      rgb(var(--color-brand-green)),
       rgb(var(--color-brand-pink)),
       rgb(var(--color-brand-green))
     );
@@ -98,7 +99,7 @@
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+  background: linear-gradient(135deg, #ecfdf5, #d1fae5);
   font-family: "Poppins", sans-serif;
   position: relative;
   overflow: hidden;
@@ -134,7 +135,7 @@
   inset: 0;
   border-radius: 2rem;
   padding: 2px;
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(34, 197, 94, 0.2));
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -196,7 +197,7 @@
 }
 .login-switch-button {
   font-weight: 600;
-  color: #8b5cf6;   /* This is the purple color */
+  color: #299376;
   background: none;
   border: none;
   cursor: pointer;
@@ -220,8 +221,8 @@
 
 .login-input:focus {
   outline: none;
-  border-color: #8b5cf6;
-  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
+  border-color: #064e3b;
+  box-shadow: 0 0 0 4px #99c2ac;
   background: white;
 }
 
@@ -249,7 +250,7 @@
   width: 100%;
   padding: 1rem 1.5rem;
   border-radius: 0.75rem;
-  background-color: rgb(255, 182, 193); /* Light pink */
+  background-color: #f67460; /* Light pink */
   color: white;
   font-weight: 600;
   font-size: 1rem;
@@ -267,7 +268,7 @@
 
 .login-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
+  box-shadow: 0 10px 25px rgba(6, 180, 99, 0.4);
 }
 
 .login-button-disabled {
@@ -284,9 +285,8 @@
 
 .login-switch-text {
   font-size: 0.9rem;
-  color: #6b7280;
+  color: #064e3b
 }
-
 
 
 .login-demo-credentials {
@@ -344,12 +344,12 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  background: linear-gradient(135deg, #6ee7b7, #065f46);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #7c3aed, #db2777);
+  background: linear-gradient(135deg, #064e3b, #34d399);
 }
 
 /* Selection color */
