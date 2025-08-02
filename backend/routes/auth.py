@@ -106,3 +106,24 @@ def application_status():
         return jsonify({ "status": application.stage })
     else:
         return jsonify({ "status": "not_started" })
+
+def get_current_user(request):
+    auth_header = request.headers.get("Authorization")
+    if not auth_header or not auth_header.startswith("Bearer "):
+        raise Exception("Missing or invalid token")
+    token = auth_header.split(" ")[1]
+    try:
+        payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=["HS256"])
+    except InvalidTokenError:
+        raise Exception("Invalid or expired token")
+    user_id = payload.get("user_id")
+    if not user_id:
+        raise Exception("Invalid token payload")
+    db = SessionLocal()
+    try:
+        user = db.query(User).filter_by(id=user_id).first()
+        if not user:
+            raise Exception("User not found")
+        return user
+    finally:
+        db.close()

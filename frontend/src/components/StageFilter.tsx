@@ -25,8 +25,9 @@ export default function StageFilter({
         <option value="">All Stages</option>
         <option value="interview_1">Interview 1</option>
         <option value="interview_2">Interview 2</option>
-        <option value="offered">Offered</option>
-        <option value="rejected_interview">Rejected after Interview</option>
+        <option value="offer_sent">Offered</option>
+        <option value="rejected_interview_1">Rejected after 1st Interview</option>
+        <option value="rejected_interview_2">Rejected after 2nd Interview</option>
       </select>
 
       <input

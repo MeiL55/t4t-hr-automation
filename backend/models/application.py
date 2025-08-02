@@ -36,6 +36,8 @@ class Application(Base):
     interview_2_email_sent = Column(Boolean, default=False)
     offer_email_sent = Column(Boolean, default=False)
     rejection_email_sent = Column(Boolean, default=False)
+    # Assigned HR, for HR dashboard access control
+    assigned_hr = Column(String, nullable=True)
     # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
@@ -63,7 +65,8 @@ class Application(Base):
             "'hired', "               # Accepted offer
             "'rejected_basic', "      # Failed basic screening (GPA, age, etc.)
             "'rejected_keyword', "    # Failed keyword screening
-            "'rejected_interview', "  # Failed during interview process
+            "'rejected_interview_1', "  # Failed during interview process
+            "'rejected_interview_2', "
             "'rejected_other')"       # Other rejection reasons
             ,
             name="check_stage_valid"

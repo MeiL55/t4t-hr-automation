@@ -19,7 +19,12 @@ export default function HRDashboard() {
 
   const fetchApplicants = async () => {
     try {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/hr_dashboard`)
+      const token = localStorage.getItem("token")
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/hr_dashboard`, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+      })
       setApplicants(res.data)
     } catch (err) {
       console.error('Error fetching applicants:', err)

@@ -15,15 +15,23 @@ export default function ApplicantDetail({ applicant, onStageUpdate }: ApplicantD
   }
 
   const handleReject = () => {
-    onStageUpdate(applicant.application_id, 'rejected_interview')
-  }
+        const rejectStage =
+            applicant.stage === 'interview_1'
+            ? 'rejected_interview_1'
+            : applicant.stage === 'interview_2'
+            ? 'rejected_interview_2'
+            : ''
+        if (rejectStage) {
+                onStageUpdate(applicant.application_id, rejectStage)
+        }
+    }
 
   const handleAdvance = () => {
     const nextStage =
       applicant.stage === 'interview_1'
         ? 'interview_2'
         : applicant.stage === 'interview_2'
-        ? 'offered'
+        ? 'offer_sent'
         : ''
     if (nextStage) {
       onStageUpdate(applicant.application_id, nextStage)

@@ -5,6 +5,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")
 from backend.models.database import SessionLocal
 from backend.models.application import Application
 from backend.services.s3_upload import generate_presigned_resume_url
+from backend.routes.auth import get_current_user
 from dotenv import load_dotenv
 env_path = os.path.join(os.path.dirname(__file__), "..", "..", ".env")
 load_dotenv(dotenv_path=env_path)
@@ -17,11 +18,31 @@ hr_dashboard_bp = Blueprint('hr_dashboard', __name__)
 def get_interview_stage_applications():
     db = SessionLocal()
     try:
-        apps = (
-            db.query(Application)
-            .filter(Application.stage.in_(['interview_1', 'interview_2', 'rejected_interview']))
-            .all()
+        user = get_current_user(request)
+        apps_query = db.query(Application).filter(
+            (
+                (Application.stage == 'interview_1') &
+                (Application.team_applied == user.hr_team)
+            ) |
+            (
+                (Application.stage == 'interview_2') &
+                ((Application.team_applied == user.hr_team) & (user.dept_lead))
+            ) |
+            (
+                (Application.stage == 'rejected_interview_1') &
+                (Application.team_applied == user.hr_team)
+            ) |
+            (
+                (Application.stage == 'rejected_interview_2') &
+                ((Application.team_applied == user.hr_team) & (user.dept_lead))
+            ) |
+            (
+                (Application.stage == 'offer_sent') &
+                ((Application.team_applied == user.hr_team) & (user.dept_lead))
+            )
+
         )
+        apps = apps_query.all()
         results = []
         for app in apps:
             results.append({
@@ -36,6 +57,7 @@ def get_interview_stage_applications():
             })
         return jsonify(results)
     except Exception as e:
+        raise
         return jsonify({"error": str(e)}), 500
     finally:
         db.close()
