@@ -344,12 +344,12 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #6ee7b7, #065f46);
+  background: linear-gradient(135deg,#34d399, #f67460);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #064e3b, #34d399);
+  background: linear-gradient(135deg,#34d399, #f67460);
 }
 
 /* Selection color */
