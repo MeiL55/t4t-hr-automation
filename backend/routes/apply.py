@@ -40,7 +40,9 @@ def submit_application():
         #resume_text_for_scoring = "experienced with python, flask, sql, and project management."
         #team_applied = data["team_applied"]
         #score = calculate_keyword_score(resume_text_for_scoring, team_applied)
-        referral = check_valid_referral(data["referral"])
+        #referral = check_valid_referral(data["referral"])
+        referral_code = data.get('referral', None) 
+        referral = check_valid_referral(referral_code)
         app = Application(
             user_id=user.id,
             date_of_birth=data["date_of_birth"],

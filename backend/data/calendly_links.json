@@ -1,0 +1,10 @@
+{
+  "software": "https://calendly.com/software-lead/interview",
+  "finance": "https://calendly.com/finance-lead/interview",
+  "media": "https://calendly.com/media-lead/interview",
+  "outreach": "https://calendly.com/outreach-lead/interview",
+  "special_ops": "https://calendly.com/special-ops-lead/interview",
+  "human_resources": "https://calendly.com/hr-lead/interview",
+  "chapters": "https://calendly.com/chapters-lead/interview",
+  "default": "https://calendly.com/default-contact/interview"
+}

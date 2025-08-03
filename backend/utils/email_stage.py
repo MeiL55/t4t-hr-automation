@@ -1,10 +1,15 @@
 import os
 import smtplib
+import json # Add this import to handle the new JSON file
 from email.mime.text import MIMEText
 from jinja2 import Environment, FileSystemLoader
 
 
 TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), "..", "templates")
+# Load the new Calendly links data file
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
+with open(os.path.join(DATA_DIR, "calendly_links.json"), 'r') as f:
+    CALENDLY_LINKS = json.load(f)
 env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 
@@ -54,7 +59,17 @@ def send_interview1_email(application):
 
 def send_interview2_email(application):
     subject = "Second Round Interview - Teens4Teens"
-    html_body = render_template("interview_2.html", name=application.user.full_name)
+    
+    # Get the team the applicant applied to
+    team = application.team_applied
+    
+    # Select the correct Calendly link for that team, or use the default
+    calendly_link = CALENDLY_LINKS.get(team, CALENDLY_LINKS["default"])
+
+    team_name_formatted = team.replace('_', ' ').title()
+    # Pass the specific calendly_link to the template
+    html_body = render_template("interview_2.html", name=application.user.full_name, calendly_link=calendly_link, team_name=team_name_formatted)
+    
     send_email(application.user.email, subject, html_body)
 
 
