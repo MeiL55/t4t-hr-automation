@@ -32,6 +32,12 @@
     font-family: inherit !important;
   }
 }
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
 
 body {
   font-family: 'Poppins', sans-serif;
@@ -51,19 +57,6 @@ body {
   animation: slideUp 0.8s ease-out 0.2s both;
 }
 
-.step-box {
-  flex: 1;
-  background: #498c3f;
-  color: white;
-  padding: 2rem;
-  border-radius: 0.75rem;
-  text-align: center;
-  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-  transform: translateY(20px);
-  opacity: 0;
-  animation: fadeInUp 0.6s ease-out forwards;
-}
-
 .step-box:nth-child(1) { animation-delay: 0.3s; }
 .step-box:nth-child(2) { animation-delay: 0.5s; }
 .step-box:nth-child(3) { animation-delay: 0.7s; }
@@ -77,7 +70,7 @@ body {
   width: 40%;
   padding: 1rem 1.5rem;
   border-radius: 0.75rem;
-  background-color: #498c3f;
+  background-color: #65a30d;
   color: white;
   font-weight: 600;
   font-size: 1rem;
@@ -164,14 +157,19 @@ body {
   100% { box-shadow: 0 0 0 0 rgba(73, 140, 63, 0); }
 }
 
-
+/**used for process & hr**/
 .step-box {
   flex: 1;
-  background: #498c3f;
+  background: linear-gradient(135deg, #10b981, #059669);
   color: white;
   padding: 2rem;
   border-radius: 0.75rem;
   text-align: center;
+  position: relative;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   transition: all 0.3s ease;
   transform: translateY(20px);
   opacity: 0;
@@ -179,6 +177,7 @@ body {
   border: 2px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
+
 
 .step-box:hover {
   transform: translateY(-5px);
@@ -238,10 +237,9 @@ body {
   position: relative;
 }
 
-/* Step Box styling */
+/* Step Box styling, this is the one used */
 .step-box {
   flex: 1;
-  background: #498c3f;
   color: white;
   padding: 2rem;
   border-radius: 0.75rem;
@@ -252,7 +250,29 @@ body {
   flex-direction: column;
   justify-content: center;
 }
+/* Color variants for departments */
+.step-box-green {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
 
+.step-box-blue {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.step-box-purple {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+.step-box-process-smooth-1 {
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+}
+
+.step-box-process-smooth-2 {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+}
+
+.step-box-process-smooth-3 {
+  background: linear-gradient(135deg, #8b5cf6, #10b981);
+}
 /* Arrow styling */
 .step-arrow {
   flex-shrink: 0;
@@ -536,12 +556,12 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg,#34d399, #f67460);
+  background:#f67460;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg,#34d399, #f67460);
+  background: #f67460;
 }
 
 /* Selection color */
@@ -549,5 +569,145 @@ html {
   background: rgba(139, 92, 246, 0.2);
   color: #1f2937;
 }
+ /*labels*/
+ .benefit-labels {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
 
+.label-green,
+.label-blue,
+.label-purple {
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
 
+.label-green {
+  background-color: #16a34a; /* Tailwind's green-600 */
+}
+
+.label-blue {
+  background-color: #2563eb; /* Tailwind's blue-600 */
+}
+
+.label-purple {
+  background-color: #7c3aed; /* Tailwind's purple-600 */
+}
+
+.t4t-footer {
+  color: white;
+  padding: 3rem 1rem 5rem;
+}
+
+.t4t-footer-container {
+  max-width: 72rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.t4t-footer-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2.5rem;
+  color: black;
+}
+
+.t4t-contact-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+.t4t-card {
+  border-radius: 1rem;
+  padding: 2rem;
+  width: 100%;
+  max-width: 20rem;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.t4t-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
+
+.t4t-card-green {
+  background-color: #16a34a; /* green-600 */
+}
+
+.t4t-card-blue {
+  background-color: #2563eb; /* blue-600 */
+}
+
+.t4t-card-neutral {
+  background-color: #bea830;
+}
+
+.t4t-card-pinkpurple {
+  background: linear-gradient(135deg, #9333ea, #db2777); /* purple → pink */
+}
+
+.t4t-card-icon {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  width: 4rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+}
+
+.t4t-icon-svg {
+  width: 2rem;
+  height: 2rem;
+  color: white;
+}
+
+.t4t-card-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.t4t-card-link {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.t4t-card-link:hover {
+  color: white;
+}
+
+.t4t-footer-bottom {
+  border-top: 1px solid #374151;
+  margin-top: 5rem;
+  padding-top: 2rem;
+  font-size: 0.9rem;
+  color: black;
+}
+
+.t4t-contact-cards-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.t4t-contact-cards-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+}

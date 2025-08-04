@@ -25,7 +25,6 @@ export const metadata: Metadata = {
   // ... (keep your existing metadata)
 };
 
-
 export default function RootLayout({
   children,
 }: {
@@ -35,7 +34,6 @@ export default function RootLayout({
     <html 
       lang="en" 
       className={`${poppins.variable} ${inter.variable} ${geistMono.variable}`}
-      style={{ backgroundColor: 'rgb(224, 187, 178)' }}
     >
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -44,7 +42,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#7c3aed" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </head>
-      <body className="antialiased font-sans min-h-screen" style={{ backgroundColor: 'rgb(224, 187, 178)' }}>
+      <body className="antialiased font-sans min-h-screen" style={{ backgroundColor: '#fbeaea' }}>
         <div id="root" className="min-h-screen">
           {children}
         </div>
