@@ -1,51 +1,33 @@
 'use client'
-
 import React from 'react'
+import styles from '../app/hr_dashboard/HRDashboard.module.css'
 
 interface ActionButtonsProps {
   stage: string
   onReject: () => void
   onAdvance: () => void
+  disabled?: boolean
 }
 
-export default function ActionButtons({ stage, onReject, onAdvance }: ActionButtonsProps) {
-  if (stage === 'interview_1') {
-    return (
-      <div className="space-x-3 mt-4">
-        <button
-          onClick={onReject}
-          className="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded"
-        >
-          Reject
-        </button>
-        <button
-          onClick={onAdvance}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-        >
-          Move to Round 2
-        </button>
-      </div>
-    )
-  }
-
-  if (stage === 'interview_2') {
-    return (
-      <div className="space-x-3 mt-4">
-        <button
-          onClick={onReject}
-          className="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded"
-        >
-          Reject
-        </button>
-        <button
-          onClick={onAdvance}
-          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
-        >
-          Offer Position
-        </button>
-      </div>
-    )
-  }
-
-  return null
+export default function ActionButtons({ stage, onReject, onAdvance, disabled = false }: ActionButtonsProps) {
+  return (
+    <div className="flex gap-4 mt-4"> {/* Using gap for consistent spacing */}
+      <button
+        onClick={onReject}
+        disabled={disabled}
+        className={`${styles.button} ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+      >
+        Reject
+      </button>
+      <button
+        onClick={onAdvance}
+        disabled={disabled}
+        className={`${styles.button} ${
+          stage === 'interview_1' ? 'bg-pink-600 hover:bg-pink-700' : 'bg-fuchsia-600 hover:bg-fuchsia-700'
+        } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+      >
+        {stage === 'interview_1' ? 'Move to Round 2' : 'Offer Position'}
+      </button>
+    </div>
+  )
 }
