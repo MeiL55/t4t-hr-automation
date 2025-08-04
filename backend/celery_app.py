@@ -29,6 +29,6 @@ celery_app.conf.update(
 celery_app.conf.beat_schedule = {
     "send-emails-every-48-hours": {
         "task": "backend.tasks.email_batch.batch_send_stage_emails",
-        "schedule": timedelta(minutes=2),
+        "schedule": timedelta(minutes=50),
     },
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter, Geist_Mono, Poppins } from 'next/font/google'; 
 import './globals.css';
+import Navbar from '../components/NavBar';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -43,6 +44,7 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </head>
       <body className="antialiased font-sans min-h-screen" style={{ backgroundColor: '#fbeaea' }}>
+        <Navbar />
         <div id="root" className="min-h-screen">
           {children}
         </div>
