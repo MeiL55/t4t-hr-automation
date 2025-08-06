@@ -12,14 +12,15 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        {/* Logo */}
+        {/* Logo - Left Side */}
         <div className="navbar-logo" onClick={() => router.push('/')}>
-            <img src="/T4T Logo.png" alt="Teens 4 Teens Logo" className="navbar-logo-image" />
-            <h1 className="navbar-logo-text">
-                Teens <span className="highlight">4</span> Teens
-            </h1>
+          <img src="/T4T Logo.png" alt="Teens 4 Teens Logo" className="navbar-logo-image" />
+          <h1 className="navbar-logo-text">
+            Teens <span className="highlight">4</span> Teens
+          </h1>
         </div>
-        {/* Dropdown for mobile */}
+
+        {/* Mobile Dropdown - Right Side */}
         <div className="navbar-dropdown">
           <button className="dropdown-toggle" onClick={() => setIsMenuOpen(!isMenuOpen)}>
             Menu {isMenuOpen ? '▲' : '▼'}
@@ -28,7 +29,7 @@ const Navbar = () => {
             <div className="dropdown-menu">
               <button onClick={() => { router.push('/'); setIsMenuOpen(false); }}>Home</button>
               <button onClick={() => { router.push('/login'); setIsMenuOpen(false); }}>Apply Now</button>
-              <button onClick={() => { router.push('/login?role=employer'); setIsMenuOpen(false); }}>Employer Login</button>
+              <button onClick={() => { router.push('/login'); setIsMenuOpen(false); }}>Employer Login</button>
             </div>
           )}
         </div>

@@ -5,7 +5,6 @@ import type { Applicant } from '../app/types/applicant'
 import ActionButtons from './ActionButtons'
 import InterviewNotes from './InterviewNotes'
 
-
 interface ApplicantDetailProps {
   applicant: Applicant | null
   onStageUpdate: (applicationId: number, newStage: string) => void
@@ -13,9 +12,12 @@ interface ApplicantDetailProps {
 
 export default function ApplicantDetail({ applicant, onStageUpdate }: ApplicantDetailProps) {
   if (!applicant) {
-    return <p style={{ color: '#718096' }}>Select an applicant to view details</p>
+    return (
+      <div className="applicant-detail-empty">
+        <p>Select an applicant to view details</p>
+      </div>
+    )
   }
-  console.log('InterviewNotes is:', InterviewNotes)
 
   const handleReject = () => {
     const rejectStage =
@@ -42,7 +44,6 @@ export default function ApplicantDetail({ applicant, onStageUpdate }: ApplicantD
   }
 
   const handleSaveEvaluation = (rating: number, notes: string) => {
-    // TODO: Implement API call to save evaluation
     console.log('Saving evaluation:', { 
       applicantId: applicant.application_id, 
       rating, 
@@ -51,30 +52,42 @@ export default function ApplicantDetail({ applicant, onStageUpdate }: ApplicantD
     })
   }
 
+  const formatStage = (stage: string) => {
+    return stage.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())
+  }
+
   return (
-    <div style={{ width: '100%', padding: '1.5rem' }}>
-      <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>
-        {applicant.name}
-      </h2>
-      <p style={{ marginBottom: '0.25rem', color: '#718096' }}>{applicant.email}</p>
-      <p style={{ marginBottom: '0.25rem', color: '#718096' }}>📞 {applicant.telephone}</p>
-      <p style={{ marginBottom: '0.5rem' }}>
-        Stage:{' '}
-        <span style={{ textTransform: 'capitalize', color: 'black', fontWeight: '500' }}>
-          {applicant.stage.replace('_', ' ')}
-        </span>
-      </p>
-      <p style={{ marginBottom: '1rem' }}>
-        Resume:{' '}
-        <a
-          href={applicant.resume_url}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ color: '#3182ce', textDecoration: 'underline' }}
-        >
-          View Resume
-        </a>
-      </p>
+    <div className="applicant-detail-simple">
+      <h1 className="applicant-name-title">{applicant.name}</h1>
+      
+      <div className="applicant-info-section">
+        <div className="info-row">
+          <span className="info-label">Email:</span>
+          <span className="info-text">{applicant.email}</span>
+        </div>
+        
+        <div className="info-row">
+          <span className="info-label">Telephone:</span>
+          <span className="info-text">{applicant.telephone}</span>
+        </div>
+        
+        <div className="info-row">
+          <span className="info-label">Stage:</span>
+          <span className="info-text">{formatStage(applicant.stage)}</span>
+        </div>
+        
+        <div className="info-row">
+          <span className="info-label">Resume:</span>
+          <a
+            href={applicant.resume_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="resume-link-simple"
+          >
+            View Resume
+          </a>
+        </div>
+      </div>
 
       <ActionButtons
         stage={applicant.stage}

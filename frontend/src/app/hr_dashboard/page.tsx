@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import axios from 'axios'
 import { Applicant } from '../types/applicant'
 import StageFilter from '../../components/StageFilter'
@@ -12,6 +12,10 @@ export default function HRDashboard() {
   const [selected, setSelected] = useState<Applicant | null>(null)
   const [stageFilter, setStageFilter] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
+  const [sidebarWidth, setSidebarWidth] = useState(33) // Percentage
+  const [isResizing, setIsResizing] = useState(false)
+  
+  const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     fetchApplicants()
@@ -44,6 +48,45 @@ export default function HRDashboard() {
     }
   }
 
+  const handleMouseDown = useCallback(() => {
+    setIsResizing(true)
+  }, [])
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (!isResizing || !containerRef.current) return
+
+    const containerRect = containerRef.current.getBoundingClientRect()
+    const newWidth = ((e.clientX - containerRect.left) / containerRect.width) * 100
+    
+    // Constrain between 25% and 60%
+    if (newWidth >= 25 && newWidth <= 60) {
+      setSidebarWidth(newWidth)
+    }
+  }, [isResizing])
+
+  const handleMouseUp = useCallback(() => {
+    setIsResizing(false)
+  }, [])
+
+  useEffect(() => {
+    if (isResizing) {
+      document.addEventListener('mousemove', handleMouseMove)
+      document.addEventListener('mouseup', handleMouseUp)
+      document.body.style.cursor = 'ew-resize'
+      document.body.style.userSelect = 'none'
+    } else {
+      document.body.style.cursor = ''
+      document.body.style.userSelect = ''
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove)
+      document.removeEventListener('mouseup', handleMouseUp)
+      document.body.style.cursor = ''
+      document.body.style.userSelect = ''
+    }
+  }, [isResizing, handleMouseMove, handleMouseUp])
+
   const filtered = applicants.filter(
     (app) =>
       (stageFilter === '' || app.stage === stageFilter) &&
@@ -51,25 +94,55 @@ export default function HRDashboard() {
   )
 
   return (
-    <div className="flex h-screen font-sans">
+    <div 
+      ref={containerRef}
+      className={`resizable-dashboard ${isResizing ? 'resizing' : ''}`}
+    >
       {/* Sidebar */}
-      <div className="w-1/3 border-r p-4">
-        <h2 className="text-xl font-bold mb-4">Applicants</h2>
-        <StageFilter
-          stageFilter={stageFilter}
-          onStageChange={setStageFilter}
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-        />
-        <ApplicantList
-          applicants={filtered}
-          selected={selected}
-          onSelect={setSelected}
-        />
+      <div 
+        className="sidebar-resizable"
+        style={{ width: `${sidebarWidth}%` }}
+      >
+        <div className="sidebar-header">
+          <h2 className="sidebar-title">
+            Applicants
+            <span className="applicant-count">{filtered.length}</span>
+          </h2>
+        </div>
+        
+        <div className="sidebar-content">
+          <StageFilter
+            stageFilter={stageFilter}
+            onStageChange={setStageFilter}
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+          />
+          <ApplicantList
+            applicants={filtered}
+            selected={selected}
+            onSelect={setSelected}
+          />
+        </div>
+      </div>
+
+      {/* Resizable Divider */}
+      <div 
+        className="resize-handle"
+        onMouseDown={handleMouseDown}
+      >
+        <div className="resize-handle-line"></div>
+        <div className="resize-handle-dots">
+          <div className="resize-dot"></div>
+          <div className="resize-dot"></div>
+          <div className="resize-dot"></div>
+        </div>
       </div>
 
       {/* Detail Panel */}
-      <div className="w-2/3 p-6">
+      <div 
+        className="detail-panel-resizable"
+        style={{ width: `${100 - sidebarWidth}%` }}
+      >
         <ApplicantDetail applicant={selected} onStageUpdate={updateStage} />
       </div>
     </div>

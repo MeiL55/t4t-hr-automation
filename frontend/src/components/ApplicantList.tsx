@@ -16,7 +16,7 @@ export default function ApplicantList({
   onSelect
 }: ApplicantListProps) {
   return (
-    <ul className="overflow-y-auto max-h-[80vh] space-y-1">
+    <div className="applicant-list-container">
       {applicants.map((app) => (
         <ApplicantCard
           key={app.application_id}
@@ -25,6 +25,6 @@ export default function ApplicantList({
           onSelect={onSelect}
         />
       ))}
-    </ul>
+    </div>
   )
 }

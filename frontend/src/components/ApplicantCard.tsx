@@ -2,6 +2,7 @@
 
 import React from 'react'
 import type { Applicant } from '../app/types/applicant'
+import '../app/globals.css';
 
 interface ApplicantCardProps {
   applicant: Applicant
@@ -11,13 +12,11 @@ interface ApplicantCardProps {
 
 export default function ApplicantCard({ applicant, isSelected, onSelect }: ApplicantCardProps) {
   return (
-    <li
+    <div
       onClick={() => onSelect(applicant)}
-      className={`p-2 cursor-pointer rounded ${
-        isSelected ? 'bg-gray-200 font-semibold' : 'hover:bg-gray-100'
-      }`}
+      className={`applicant-card-simple ${isSelected ? 'selected' : ''}`}
     >
       {applicant.name}
-    </li>
+    </div>
   )
 }
