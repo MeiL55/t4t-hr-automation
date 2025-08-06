@@ -6,9 +6,8 @@ An internal HR automation platform for **Teens 4 Teens (T4T)** — a youth-led n
 
 ## Development Team
 
-- **Frontend Developers**
+- **Frontend Developer, UI designer**
   - [Finlay McAfee](https://www.linkedin.com/in/finlay-mcafee)
-  - [Himanshu Panchal](https://www.linkedin.com/in/himanshu--panchal/)
 
 - **Full Stack Developer**
   - [Mei Li](https://www.linkedin.com/in/mei-li-ba800b290/)
