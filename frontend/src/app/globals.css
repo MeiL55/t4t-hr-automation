@@ -1781,3 +1781,44 @@ html {
 .detail-panel-resizable::-webkit-scrollbar-thumb:hover {
   background: #059669; /* emerald-600 */
 }
+/**feedback form**/
+/* Simple Feedback Area */
+.interview-evaluation .previous-feedback {
+  background-color: #fff1f2 !important;
+  border: 1px solid #fecaca !important;
+  border-radius: 8px !important;
+  padding: 1rem !important;
+  margin-bottom: 1.5rem !important;
+  border-left: 4px solid #fb7185 !important;
+}
+
+.interview-evaluation .feedback-header {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  color: #f43f5e !important;
+  margin: 0 0 0.75rem 0 !important;
+}
+
+.interview-evaluation .feedback-content {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+}
+
+.interview-evaluation .rating-info {
+  font-size: 0.875rem !important;
+  color: #be123c !important;
+}
+
+.interview-evaluation .rating-info strong {
+  color: #f43f5e !important;
+  font-size: 1rem !important;
+}
+
+.interview-evaluation .notes-info p {
+  font-size: 0.875rem !important;
+  color: #4b5563 !important;
+  margin: 0 !important;
+  line-height: 1.4 !important;
+  white-space: pre-line !important;
+}

@@ -98,7 +98,6 @@ export default function ApplicantDetail({ applicant, onStageUpdate }: ApplicantD
       <InterviewNotes
         applicantId={applicant.application_id}
         stage={applicant.stage}
-        onSave={handleSaveEvaluation}
       />
     </div>
   )
