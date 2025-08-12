@@ -77,18 +77,115 @@ export const surveyJson = {
         {
           "type": "dropdown",
           "name": "team_applied",
-          "title": "Which team are you applying to?",
+          "title": "Which department are you applying to?",
           "choices": [
             { "value": "software", "text": "Software" },
             { "value": "finance", "text": "Finance" },
             { "value": "media", "text": "Media" },
             { "value": "outreach", "text": "Outreach" },
-            { "value": "special_ops", "text": "Special Operations" },
             { "value": "human_resources", "text": "Human Resources" },
-            { "value": "chapters", "text": "Chapters" }
+            { "value": "executive", "text": "Executive" }
           ],
           "isRequired": true
         },
+        {
+          "type": "checkbox",
+          "name": "positions_software",
+          "valueName": "positions_selected",
+          "title": "Select up to 3 positions",
+          "visibleIf": "{team_applied} = 'software'",
+          "isRequired": true,
+          "minSelectedChoices": 1,
+          "maxSelectedChoices": 3,
+          "clearIfInvisible": "onHidden",
+          "choices": [
+            "Front End Engineer",
+            "Full Stack Engineer",
+            "AI Engineer",
+            "Data Scientist",
+            "Technical Project Manager"
+          ]
+        },
+        {
+          "type": "checkbox",
+          "name": "positions_finance",
+          "valueName": "positions_selected",
+          "title": "Select up to 3 positions",
+          "visibleIf": "{team_applied} = 'finance'",
+          "isRequired": true,
+          "minSelectedChoices": 1,
+          "maxSelectedChoices": 3,
+          "clearIfInvisible": "onHidden",
+          "choices": [
+            "Grant Writer/Specialist",
+            "Grant Compliance Officer",
+            "Grant Researcher"
+          ]
+        },
+        {
+          "type": "checkbox",
+          "name": "positions_media",
+          "valueName": "positions_selected",
+          "title": "Select up to 3 positions",
+          "visibleIf": "{team_applied} = 'media'",
+          "isRequired": true,
+          "minSelectedChoices": 1,
+          "maxSelectedChoices": 3,
+          "clearIfInvisible": "onHidden",
+          "choices": [
+            "Content Creator",
+            "Social Media Manager",
+            "Ambassador Coordinator",
+            "Partnership Liaison",
+          ]
+        },
+        {
+          "type": "checkbox",
+          "name": "positions_outreach",
+          "valueName": "positions_selected",
+          "title": "Select up to 3 positions",
+          "visibleIf": "{team_applied} = 'outreach'",
+          "isRequired": true,
+          "minSelectedChoices": 1,
+          "maxSelectedChoices": 3,
+          "clearIfInvisible": "onHidden",
+          "choices": [
+            "Partnership Researcher",
+            "Outreach Coordinator / Sales",
+            "Administrative Assistant",
+            "Local Outreach Ambassador"
+          ]
+        },
+        {
+          "type": "checkbox",
+          "name": "positions_human_resources",
+          "valueName": "positions_selected",
+          "title": "Select up to 3 positions",
+          "visibleIf": "{team_applied} = 'human_resources'",
+          "isRequired": true,
+          "minSelectedChoices": 1,
+          "maxSelectedChoices": 3,
+          "clearIfInvisible": "onHidden",
+          "choices": [
+            "Onboarding Specialist",
+            "Admin Assistant",
+            "HR Representative",
+            "Content Coordinator"
+          ]
+        },
+        {
+          "type": "checkbox",
+          "name": "positions_executive",
+          "valueName": "positions_selected",
+          "title": "Select your position",
+          "visibleIf": "{team_applied} = 'executive'",
+          "isRequired": true,
+          "clearIfInvisible": "onHidden",
+          "choices": [
+            "Chief Secretary"
+          ]
+        },
+
         {
           "type": "file",
           "name": "resume",
@@ -115,3 +212,4 @@ export const surveyJson = {
   ],
   "headerView": "advanced"
 }
+
