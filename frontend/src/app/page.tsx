@@ -1,36 +1,7 @@
 import Image from 'next/image';
 import { Mail, Instagram, Linkedin, Link} from 'lucide-react';
 export default function Home() {
-  const departments = [
-    {
-      name: "Software",
-      description: "Build and maintain our digital platforms and tools"
-    },
-    {
-      name: "Outreach",
-      description: "Connect with partners and grow our network"
-    },
-    {
-      name: "Finance",
-      description: "Manage budgets and funding initiatives"
-    },
-    {
-      name: "Media",
-      description: "Create contents, manage our online presence"
-    },
-    {
-      name: "Chapters",
-      description: "Support and expand our regional branches"
-    },
-    {
-      name: "Special Operations",
-      description: "Handle strategic projects and initiatives"
-    },
-    {
-      name: "Human Resources",
-      description: "Recruit and support our team members"
-    }
-  ];
+
 
   return (
     <main className="min-h-screen text-white">  
@@ -61,7 +32,7 @@ export default function Home() {
     </div>
   </div>
 </section>
-      {/* Our Departments Section */}
+{/* Our Departments Section */}
       <section className="py-12 px-4">
         <h2 className="text-[2.0rem] font-bold mb-8 text-center">
           Our Departments
@@ -74,14 +45,23 @@ export default function Home() {
     <div className="step-box step-box-blue">
       <h3 className="text-[1.4rem] font-bold mb-4">Software</h3>
       <p className="text-[1.1rem]">Build and maintain our digital platforms and tools</p>
+      <p className="text-sm text-gray-700 italic">
+        Open positions: Front End Engineer, Full Stack Engineer, AI Engineer, Data Scientist, Technical Project Manager.
+      </p>
     </div>
     <div className="step-box step-box-green">
       <h3 className="text-[1.4rem] font-bold mb-4">Outreach</h3>
       <p className="text-[1.1rem]">Connect with partners and grow our network</p>
+      <p className="text-sm text-gray-700 italic">
+        Open positions: Partnership Researcher, Outreach Coordinator / Sales, Administrative Assistant, Local Outreach Ambassador.
+      </p>
     </div>
     <div className="step-box step-box-purple">
       <h3 className="text-[1.4rem] font-bold mb-4">Finance</h3>
       <p className="text-[1.1rem]">Manage budgets and funding initiatives</p>
+      <p className="text-sm text-gray-700 italic">
+        Open positions: Grant Writer / Specialist, Grant Researcher, Grant Compliance Officer (Reviewer).
+      </p>
     </div>
   </div>
 
@@ -90,25 +70,30 @@ export default function Home() {
     <div className="step-box step-box-green">
       <h3 className="text-[1.4rem] font-bold mb-4">Media</h3>
       <p className="text-[1.1rem]">Create contents, manage our online presence</p>
+      <p className="text-sm text-gray-700 italic">
+        Open positions: Content Creator, Social Media Manager, Ambassador Coordinator, Partnership Liaison.
+      </p>
     </div>
     <div className="step-box step-box-blue">
-      <h3 className="text-[1.4rem] font-bold mb-4">Chapters</h3>
+      <h3 className="text-[1.4rem] font-bold mb-4">Human Resources</h3>
       <p className="text-[1.1rem]">Support and expand our regional branches</p>
+      <p className="text-sm text-gray-700 italic">
+        Open positions: Onboarding Specialist, Admin Assistant, HR Representative, Content Coordinator.
+      </p>
     </div>
     <div className="step-box step-box-purple">
-      <h3 className="text-[1.4rem] font-bold mb-4">Special Operations</h3>
+      <h3 className="text-[1.4rem] font-bold mb-4">Executive</h3>
       <p className="text-[1.1rem]">Handle strategic projects and initiatives</p>
-    </div>
-  </div>
-
-  {/* Third Row - HR (centered, using brand green) */}
-  <div className="py-12 px-4 flex justify-center">
-    <div className="step-box step-box-hr">
-      <h3 className="text-[1.4rem] font-bold mb-4">Human Resources</h3>
-      <p className="text-[1.1rem]">Recruit and support our team members</p>
+      <p className="text-sm text-gray-700 italic">
+        Open position: Chief Secretary (Exec/Chief Secretary).
+      </p>
     </div>
   </div>
 </section>
+
+  
+
+
 
       {/* Application Process Section */}
 <section className="py-12 px-4">
