@@ -4,7 +4,7 @@ from sqlalchemy.exc import IntegrityError
 import sys, os
 import jwt
 from datetime import datetime, timedelta
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+#sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from backend.models.database import SessionLocal
 from backend.models.user import User
 from backend.models.application import Application

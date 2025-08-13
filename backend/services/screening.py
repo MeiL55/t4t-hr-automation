@@ -4,7 +4,7 @@ import json
 from datetime import date
 from sqlalchemy.orm import Session
 from io import BytesIO
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+#sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from backend.models.user import User
 from backend.models.application import Application
 from backend.services.send_email_stages import send_email_for_stage

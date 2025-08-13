@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify
 import sys,os
 from flask import request
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+#sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from backend.models.database import SessionLocal
 from backend.models.application import Application
 from backend.models.evaluation import Evaluation

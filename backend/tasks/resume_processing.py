@@ -1,6 +1,6 @@
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+#sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from backend.celery_app import celery_app
 from backend.models.application import Application
 from backend.services.s3_upload import score_from_s3

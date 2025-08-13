@@ -2,7 +2,7 @@ import os,sys
 from celery import Celery
 from dotenv import load_dotenv
 from celery.schedules import timedelta
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+#sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 # Load environment variables
 env_path = os.path.join(os.path.dirname(__file__), "..", ".env")
 load_dotenv(dotenv_path=env_path)

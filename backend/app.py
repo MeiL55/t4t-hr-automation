@@ -1,7 +1,7 @@
 from flask import Flask
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+#sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from routes.auth import auth_bp
 from routes.apply import user_bp
 from routes.resume import resume_bp

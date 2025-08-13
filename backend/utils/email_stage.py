@@ -3,7 +3,7 @@ import smtplib
 import json # Add this import to handle the new JSON file
 from email.mime.text import MIMEText
 from jinja2 import Environment, FileSystemLoader
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+#sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from backend.utils.calendly import get_slots, get_primary_url, format_team
 
 TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), "..", "templates")
