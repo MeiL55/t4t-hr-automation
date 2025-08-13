@@ -1,10 +1,12 @@
 # Python virtual environment
-venv/
+.venv/
 __pycache__/
 *.pyc
 
 # Environment files
 .env
+.env.local
+.env.production
 
 # System/editor files
 .DS_Store
