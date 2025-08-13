@@ -7,6 +7,7 @@ import { Model, FunctionFactory } from "survey-core"
 import "survey-core/survey-core.min.css"
 import "@/app/globals.css"
 import { surveyJson } from "@/data/applyForm"
+import rolesByTeam from "@/data/rolesByTeam.json"
 
 FunctionFactory.Instance.register("getAge", function (params: any[]): number {
   const birthdateStr = params[0]
@@ -31,7 +32,6 @@ export default function SurveyComponent() {
       setModelKey(Date.now().toString())
     }
   }, [])
-
    useEffect(() => {
     if (typeof window !== "undefined" && (import.meta as any).hot) {
       (import.meta as any).hot.accept(() => {
@@ -39,6 +39,7 @@ export default function SurveyComponent() {
       })
     }
   }, [])
+
   // Pre-fill telephone
   useEffect(() => {
     async function fetchAndInjectTelephone() {
@@ -63,6 +64,34 @@ export default function SurveyComponent() {
 
   useEffect(() => {
     const handleValueChange = async (sender: any, options: any) => {
+      // Handle team selection change to update role dropdown
+      if (options.name === "team_applied") {
+        const selectedTeam = options.value
+        const roleQuestion = sender.getQuestionByName("role_applied")
+        if (!roleQuestion) {
+          console.error("Role question not found in survey model")
+          return
+        }
+        if (selectedTeam && Object.prototype.hasOwnProperty.call(rolesByTeam, selectedTeam)) {
+          // Create choices array from the roles for the selected team
+          const roleChoices = (rolesByTeam as any)[selectedTeam].map((role: string) => ({
+            value: role,
+            text: role
+          }))
+          // Update the role dropdown choices
+          roleQuestion.setPropertyValue("choices", roleChoices)
+          // Clear the current role selection since team changed
+          sender.setValue("role_applied", undefined)
+          // Make the role question visible
+          roleQuestion.visible = true
+        } else {
+          // Hide role question if no valid team selected
+          roleQuestion.setPropertyValue("choices", [])
+          roleQuestion.visible = false
+          sender.setValue("role_applied", undefined)
+        }
+      }
+
       if (options.name === "resume") {
         const token = localStorage.getItem("token")
         const resumeList = options.value
@@ -86,7 +115,6 @@ export default function SurveyComponent() {
         }
       }
     }
-
     const handleComplete = async (sender: any) => {
       const data = sender.data
       const token = localStorage.getItem("token")
@@ -102,7 +130,6 @@ export default function SurveyComponent() {
         alert("Failed to submit application")
       }
     }
-
     model.onValueChanged.add(handleValueChange)
     model.onComplete.add(handleComplete)
 

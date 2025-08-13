@@ -90,6 +90,14 @@ export const surveyJson = {
           "isRequired": true
         },
         {
+          type: "dropdown",
+          name: "role_applied",
+          title: "Which role are you mostly interested in?",
+          choices: [],
+          visibleIf: "{team_applied} notempty",
+          isRequired: true
+        },
+        {
           "type": "file",
           "name": "resume",
           "title": "Upload Your Resume (PDF Only):",

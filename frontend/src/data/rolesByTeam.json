@@ -1,0 +1,38 @@
+{
+  "media": [
+    "Social Media Manager",
+    "Ambassador Coordinator",
+    "Partnership Liaison",
+    "Brand Designer",
+    "Content Creator"
+  ],
+  "human_resources": [
+    "Onboarding Specialist",
+    "Admin Assistant",
+    "HR Rep.",
+    "Content Coordinator"
+  ],
+  "software": [
+    "Full Stack Engineer Intern",
+    "ML Engineer",
+    "Data Scientist"
+  ],
+  "finance": [
+    "Grant Writer / Specialist",
+    "Grant Compliance Officer",
+    "Admin Assistant / Secretary"
+  ],
+  "outreach": [
+    "Partnership Researcher",
+    "Outreach Coordinator / Sales",
+    "Administrative Assistant"
+  ],
+  "chapters": [
+    "Chapter Manager",
+    "Regional Chapter Head",
+    "Chapter Lead"
+  ],
+  "special_ops": [
+    "Executive / Chief Secretary"
+  ]
+}

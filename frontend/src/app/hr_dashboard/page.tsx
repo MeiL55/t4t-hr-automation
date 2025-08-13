@@ -12,7 +12,7 @@ export default function HRDashboard() {
   const [selected, setSelected] = useState<Applicant | null>(null)
   const [stageFilter, setStageFilter] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
-  const [sidebarWidth, setSidebarWidth] = useState(33) // Percentage
+  const [sidebarWidth, setSidebarWidth] = useState(33)
   const [isResizing, setIsResizing] = useState(false)
   
   const containerRef = useRef<HTMLDivElement>(null)

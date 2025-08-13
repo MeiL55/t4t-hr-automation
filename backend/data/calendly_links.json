@@ -1,10 +1,73 @@
 {
-  "software": "https://calendly.com/software-lead/interview",
-  "finance": "https://calendly.com/finance-lead/interview",
-  "media": "https://calendly.com/media-lead/interview",
-  "outreach": "https://calendly.com/outreach-lead/interview",
-  "special_ops": "https://calendly.com/special-ops-lead/interview",
-  "human_resources": "https://calendly.com/hr-lead/interview",
-  "chapters": "https://calendly.com/chapters-lead/interview",
-  "default": "https://calendly.com/default-contact/interview"
+  "software": {
+    "round1": [
+      { "label": "Morning", "owner": "Maxwell", "url": "https://calendly.com/maxwell-g-cabrera/20minutes" },
+      { "label": "Early Evening", "owner": "Krishna", "url": "https://calendly.com/krishnahsanghani/teens4teens-interviews" },
+      { "label": "Late Evening", "owner": "John", "url": "https://calendly.com/johnhnguyen2000/20" },
+      { "label": "Weekend", "owner": "Mehr", "url": "https://calendly.com/teens4teens_mehr/interview" }
+    ],
+    "round2": [
+      { "label": "Dept Lead 1:1", "owner": "Mehr Anand", "url": "https://calendly.com/teens4teens_mehr/interview" }
+    ]
+  },
+
+  "finance": {
+    "round1": [
+      { "label": "Morning", "owner": "Maxwell", "url": "https://calendly.com/maxwell-g-cabrera/20minutes" },
+      { "label": "Evening", "owner": "Finance Recruiter", "url": "https://calendly.com/..." }
+    ],
+    "round2": [
+      { "label": "Dept Lead 1:1", "owner": "Arin Wani", "url": "https://calendly.com/..." }
+    ]
+  },
+
+  "media": {
+    "round1": [
+      { "label": "Morning", "owner": "Maxwell", "url": "https://calendly.com/maxwell-g-cabrera/20minutes" },
+      { "label": "Evening", "owner": "Media Recruiter", "url": "https://calendly.com/..." }
+    ],
+    "round2": [
+      { "label": "Dept Lead 1:1", "owner": "Yareli", "url": "https://calendly.com/..." }
+    ]
+  },
+
+  "outreach": {
+    "round1": [
+      { "label": "Morning", "owner": "Maxwell", "url": "https://calendly.com/maxwell-g-cabrera/20minutes" },
+      { "label": "Evening", "owner": "Outreach Recruiter", "url": "https://calendly.com/..." }
+    ],
+    "round2": [
+      { "label": "Dept Lead 1:1", "owner": "Mehek", "url": "https://calendly.com/..." }
+    ]
+  },
+
+  "human_resources": {
+    "round1": [
+      { "label": "Morning", "owner": "Maxwell", "url": "https://calendly.com/maxwell-g-cabrera/20minutes" },
+      { "label": "Evening", "owner": "HR Recruiter", "url": "https://calendly.com/..." }
+    ],
+    "round2": [
+      { "label": "Dept Lead 1:1", "owner": "John", "url": "https://calendly.com/..." }
+    ]
+  },
+
+  "chapters": {
+    "round1": [
+      { "label": "Morning", "owner": "Maxwell", "url": "https://calendly.com/maxwell-g-cabrera/20minutes" },
+      { "label": "Evening", "owner": "Chapters Recruiter", "url": "https://calendly.com/..." }
+    ],
+    "round2": [
+      { "label": "Dept Lead 1:1", "owner": "Regional Lead", "url": "https://calendly.com/..." }
+    ]
+  },
+
+  "special_ops": {
+    "round1": [
+      { "label": "Morning", "owner": "Maxwell", "url": "https://calendly.com/maxwell-g-cabrera/20minutes" },
+      { "label": "Evening", "owner": "Ops Recruiter", "url": "https://calendly.com/..." }
+    ],
+    "round2": [
+      { "label": "Dept Lead 1:1", "owner": "Ops Lead", "url": "https://calendly.com/..." }
+    ]
+  }
 }

@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Teens4Teens Interview Invitation</title>
 </head>
 <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
   <p>Hi {{ name }},</p>
 
   <p>
-    Congratulations! You've been selected to move forward in the <strong>Teens4Teens internship process</strong>.
-    We were impressed by your dedication to our mission and your previous experience, and we’re excited to move forward with the next steps.
+    Congratulations! You've been selected to move forward in the
+    <strong>Teens4Teens internship process</strong> ({{ team_name }} team).
+    We were impressed by your dedication to our mission and your previous experience, and we're excited to move forward with the next steps.
   </p>
 
-  <p>
-    To streamline scheduling, please use one of the following Calendly links for either a morning, evening, or weekend interview with one of our recruiters:
-  </p>
+  <p>To streamline scheduling, please use one of the following Calendly links for your interview:</p>
 
   <ul>
-    <li><strong>Morning:</strong> <a href="https://calendly.com/maxwell-g-cabrera/20minutes">Maxwell's Link</a></li>
-    <li><strong>Early Evening:</strong> <a href="https://calendly.com/krishnahsanghani/teens4teens-interviews">Krishna's Link</a></li>
-    <li><strong>Late Evening:</strong> <a href="https://calendly.com/johnhnguyen2000/20">John's Link</a></li>
-    <li><strong>Weekend:</strong> <a href="https://calendly.com/teens4teens_mehr/interview">Mehr's Link</a></li>
+    {% for slot in slots %}
+      <li><strong>{{ slot.label }}:</strong>
+        <a href="{{ slot.url }}">{{ slot.owner }}'s Link</a>
+      </li>
+    {% endfor %}
   </ul>
 
   <h4>How to Schedule:</h4>
@@ -31,12 +31,9 @@
   </ol>
 
   <p>
-    If none of the available times fit your schedule, please reply directly to this email with your availability, and we will do our best to accommodate.
-    If you have any questions in the meantime, feel free to reach out.
-  </p>
-
-  <p>
-    As this interview will be on camera, please dress appropriately and join the meeting a few minutes early to ensure your setup is ready.
+    If none of the available times fit your schedule, please reply to this email with your availability,
+    and we will do our best to accommodate. As this interview will be on camera, please dress appropriately
+    and join a few minutes early to ensure your setup is ready.
   </p>
 
   <p>Best regards,</p>

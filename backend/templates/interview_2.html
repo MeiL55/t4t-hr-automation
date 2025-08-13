@@ -1,32 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Teens4Teens Interview Round 2 Invitation</title>
+  <meta charset="UTF-8" />
+  <title>Teens4Teens Second Round Interview</title>
 </head>
-<body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
   <p>Hi {{ name }},</p>
 
-  <p><strong>Congratulations!</strong></p>
-
   <p>
-    You’ve been accepted to a <strong>second round interview</strong> for the <strong>{{ team_name }} team</strong> in our summer internship program. We're excited to learn more about your skills and experience.
-  </p>
-
-  <p>
-    Please schedule your interview using the link below at a time that works for you:
-  </p>
-
-  <p style="margin: 20px 0;">
-    👉 <a href="{{ calendly_link }}" style="font-size: 16px; font-weight: bold; color: #007bff; text-decoration: none;">
-      Click here to schedule your interview
-    </a>
+    Congratulations on successfully completing your first interview! We are pleased to invite you to the 
+    <strong>second round technical interview</strong> for the <strong>{{ team_name }} team</strong> position at Teens4Teens.
   </p>
 
   <p>
-    This interview will be with the lead of the department you applied to. If you have any questions, please feel free to reach out.
+    This technical interview will focus on your technical skills, problem-solving abilities, and relevant experience. 
+    We'll discuss your technical background and how you can contribute to our mission.
   </p>
-  
+
+  <p>To streamline scheduling, please use one of the following Calendly links for your technical interview:</p>
+
+  <ul>
+    {% for slot in slots %}
+      <li><strong>{{ slot.label }}:</strong>
+        <a href="{{ slot.url }}">{{ slot.owner }}'s Link</a>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <h4>How to Schedule:</h4>
+  <ol>
+    <li>Click your preferred Calendly link above.</li>
+    <li>Select a date and time that works for you.</li>
+    <li>Complete any required fields and confirm your appointment.</li>
+  </ol>
+
+  <h4>Interview Preparation:</h4>
+  <ul>
+    <li>Have any relevant portfolio work, technical projects, or code samples ready to discuss</li>
+    <li>Be prepared to discuss your technical experience and problem-solving approach</li>
+    <li>Test your camera and microphone beforehand</li>
+    <li>Join a few minutes early to ensure your setup is ready</li>
+  </ul>
+
+  <p>
+    If none of the available times fit your schedule, please reply to this email with your availability,
+    and we will do our best to accommodate. This interview will be approximately 45-60 minutes and will focus on 
+    technical skills, coding experience, and project portfolio.
+  </p>
+
   <p>Best regards,</p>
   <p><strong>Teens4Teens Recruitment Team</strong></p>
 </body>
