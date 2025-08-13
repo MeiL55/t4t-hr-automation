@@ -9,14 +9,14 @@ load_dotenv(dotenv_path=env_path)
 # Redis configuration
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
 # Create Celery app
-celery_app = Celery(
+app = Celery(
     "internship_screening",
     broker=REDIS_URL,
     backend=REDIS_URL,
     include=['backend.tasks.resume_processing', 'backend.tasks.email_batch']
 )
 # Celery configuration
-celery_app.conf.update(
+app.conf.update(
     task_serializer='json',
     accept_content=['json'],
     result_serializer='json',
@@ -27,7 +27,7 @@ celery_app.conf.update(
     worker_prefetch_multiplier=1,
 )
 # change time delta
-celery_app.conf.beat_schedule = {
+app.conf.beat_schedule = {
     "send-emails-every-48-hours": {
         "task": "backend.tasks.email_batch.batch_send_stage_emails",
         "schedule": timedelta(minutes=60),
