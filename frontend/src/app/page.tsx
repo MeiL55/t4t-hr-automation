@@ -182,7 +182,7 @@ export default function Home() {
         </div>
 
         <div className="t4t-footer-bottom">
-          <p>© {new Date().getFullYear()} Teens4Teens. A 501(c)(3) nonprofit organization. All rights reserved.</p>
+          <p>{new Date().getFullYear()} Teens4Teens. A 501(c)(3) nonprofit organization. All rights reserved.</p>
         </div>
       </div>
     </footer>

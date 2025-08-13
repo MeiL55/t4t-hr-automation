@@ -1822,3 +1822,85 @@ html {
   line-height: 1.4 !important;
   white-space: pre-line !important;
 }
+
+.application-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  padding: 0 1rem;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.application-card {
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border: 1px solid #f3f4f6;
+  padding: 2rem;
+  max-width: 28rem;
+  width: 100%;
+}
+
+.success-icon {
+  width: 4rem;
+  height: 4rem;
+  background-color: #dcfce7;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+}
+
+.checkmark {
+  width: 2rem;
+  height: 2rem;
+  color: #16a34a;
+}
+
+.application-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #111827;
+}
+
+.application-message {
+  font-size: 1.125rem;
+  color: #374151;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.email-reminder {
+  background-color: #eff6ff;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  border-left: 4px solid #3b82f6;
+}
+
+.reminder-text {
+  font-size: 0.875rem;
+  color: #1d4ed8;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .application-card {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+  
+  .application-title {
+    font-size: 1.25rem;
+  }
+  
+  .application-message {
+    font-size: 1rem;
+  }
+}
