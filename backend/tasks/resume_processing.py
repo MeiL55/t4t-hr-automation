@@ -1,14 +1,14 @@
 import sys
 import os
 #sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-from backend.celery_app import celery_app
+from backend.celery_app import app
 from backend.models.application import Application
 from backend.services.s3_upload import score_from_s3
 from backend.services.screening import screen_keyword_requirements
 from backend.models.database import SessionLocal
 from sqlalchemy.orm import Session
 
-@celery_app.task(bind=True, max_retries=3, default_retry_delay=60)
+@app.task(bind=True, max_retries=3, default_retry_delay=60)
 def process_resume_and_screen(self, id: int):
     """
     Celery task to:

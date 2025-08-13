@@ -1,12 +1,12 @@
 import sys
 import os
 #sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-from backend.celery_app import celery_app
+from backend.celery_app import app
 from backend.services.send_email_stages import send_email_for_stage
 from backend.models.application import Application
 from backend.models.database import SessionLocal
 
-@celery_app.task
+@app.task
 def batch_send_stage_emails():
     """
     This task checks all applications with finalized stages (rejected, interview_1, etc.)
