@@ -3,7 +3,7 @@ import os, json
 from pathlib import Path
 from typing import Any, Dict, List
 
-# 删除这行错误的导入：from backend.data.calendly_links.json
+
 
 _CFG_PATH = Path(__file__).resolve().parent.parent / "data" / "calendly_links.json"
 _LINKS: Dict[str, Any] = json.loads(_CFG_PATH.read_text(encoding="utf-8"))
