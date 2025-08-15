@@ -41,7 +41,6 @@ def get_interview_stage_applications():
                 (Application.stage == 'offer_sent') &
                 ((Application.team_applied == user.hr_team) & (user.dept_lead))
             )
-
         )
         apps = apps_query.all()
         results = []

@@ -13,8 +13,8 @@ from typing import Optional
 
 
 MIN_GPA = 2.0
-AGE_RANGE = (15, 23)
-EDU_LEVELS_ALLOWED = ['high_school', 'bachelors']
+AGE_RANGE = (15, 25)
+EDU_LEVELS_ALLOWED = ['high_school', 'associates', 'bachelors', 'masters']
 MIN_KEYWORD_SCORE = 25
 
 def check_valid_referral(referral: str) -> bool:
