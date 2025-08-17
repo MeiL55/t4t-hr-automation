@@ -30,6 +30,6 @@ app.conf.update(
 app.conf.beat_schedule = {
     "send-emails-every-48-hours": {
         "task": "backend.tasks.email_batch.batch_send_stage_emails",
-        "schedule": timedelta(minutes=60),
+        "schedule": timedelta(hours=48),
     },
 }
