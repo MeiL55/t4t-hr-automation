@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 CORS(app, 
      supports_credentials=True,
-     origins=["http://localhost:3000", "https://apply.teens4teens.net/"],
+     origins=["http://localhost:3000", "https://apply.teens4teens.net"],
      allow_credentials=True
 )
 app.register_blueprint(auth_bp)
