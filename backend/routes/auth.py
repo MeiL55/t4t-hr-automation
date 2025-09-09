@@ -103,8 +103,8 @@ def login():
             token,
             max_age=8*60*60,
             httponly=True,
-            secure=False,
-            samesite='Lax',
+            secure=True, #change to false in dev
+            samesite='None', #change to Lax in dev
             path='/'
         )
         return response
