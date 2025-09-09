@@ -12,16 +12,16 @@ from dotenv import load_dotenv
 env_path = os.path.join(os.path.dirname(__file__), "..", "..", ".env")
 from flask import Blueprint, request, jsonify
 from backend.utils.auth_utils import token_required
-
+from backend.routes.auth import cookie_auth_required
 #import the new scoring and parsing functions
 from backend.services.screening import screen_basic_filters, check_valid_referral, calculate_keyword_score
 from backend.tasks.resume_processing import process_resume_and_screen
 user_bp = Blueprint("user", __name__)
 
 @user_bp.route("/api/user_info", methods=["GET"])
-@token_required
+@cookie_auth_required
 def get_user_info():
-    user = request.user
+    user = request.current_user
     print(user)
     return jsonify({
         "email": user.email,
@@ -30,9 +30,9 @@ def get_user_info():
     })
 
 @user_bp.route("/api/application", methods=["POST"])
-@token_required
+@cookie_auth_required
 def submit_application():
-    user = request.user
+    user = request.current_user
     data = request.json
     db = SessionLocal()
 
@@ -57,15 +57,14 @@ def submit_application():
             referral=referral,
             keyword_score=5 if referral else 0,
         )
-        
         db.add(app)
         db.commit()
         screen_basic_filters(app, db)           #1. basic filters - gpa, age, degree
         process_resume_and_screen.delay(app.id) #2. keyword scoring - trigger celery
         return jsonify({"message": "Application submitted and queued for scoring"}), 200
     except Exception as e:
-        import traceback
-        traceback.print_exc()
+        #import traceback
+        #traceback.print_exc()
         db.rollback() # Rollback on error
         return jsonify({"error": str(e)}), 400
     finally:

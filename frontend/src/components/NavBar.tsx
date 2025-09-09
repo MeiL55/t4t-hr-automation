@@ -4,10 +4,25 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import '../app/globals.css';
+import axios from 'axios';
 
 const Navbar = () => {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
+  const handleLogout = async () => {
+    try {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/logout`, {}, {
+        withCredentials: true
+      })
+      router.push('/login')
+      setIsMenuOpen(false)
+    } catch (err) {
+      console.error('Logout failed', err)
+      router.push('/login')
+      setIsMenuOpen(false)
+    }
+  }
 
   return (
     <nav className="navbar">
@@ -30,6 +45,7 @@ const Navbar = () => {
               <button onClick={() => { router.push('/'); setIsMenuOpen(false); }}>Home</button>
               <button onClick={() => { router.push('/login'); setIsMenuOpen(false); }}>Apply Now</button>
               <button onClick={() => { router.push('/login'); setIsMenuOpen(false); }}>Employer Login</button>
+              <button onClick={() => { handleLogout(); setIsMenuOpen(false); }}>Log out</button>
             </div>
           )}
         </div>

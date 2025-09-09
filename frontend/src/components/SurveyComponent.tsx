@@ -40,23 +40,24 @@ export default function SurveyComponent() {
     }
   }, [])
 
-  // Pre-fill telephone
+  // Pre-fill telephone using cookie authentication
   useEffect(() => {
     async function fetchAndInjectTelephone() {
       try {
-        const token = localStorage.getItem("token")
         const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/user_info`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+          withCredentials: true  // Use cookie authentication
         })
         const { telephone } = res.data
         model.data = {
           ...model.data,
           telephone
         }
-      } catch (err) {
+      } catch (err: any) {
         console.error("Failed to load user telephone", err)
+        if (err.response?.status === 401) {
+          // Redirect to login if unauthorized
+          window.location.href = '/login'
+        }
       }
     }
     fetchAndInjectTelephone()
@@ -93,7 +94,6 @@ export default function SurveyComponent() {
       }
 
       if (options.name === "resume") {
-        const token = localStorage.getItem("token")
         const resumeList = options.value
         if (!resumeList || !resumeList.length) return
         const resume = resumeList[0]
@@ -101,7 +101,7 @@ export default function SurveyComponent() {
           const uploadRes = await axios.post(
             `${process.env.NEXT_PUBLIC_API_URL}/api/upload_resume`,
             { resume },
-            { headers: { Authorization: `Bearer ${token}` } }
+            { withCredentials: true }  // Use cookie authentication
           )
           const resume_filename = uploadRes.data.resume_filename
           sender.setValue("resume_filename", resume_filename)
@@ -109,27 +109,40 @@ export default function SurveyComponent() {
           const q = sender.getQuestionByName("resume")
           q.readOnly = true
           q.description = "Resume uploaded successfully."
-        } catch (err) {
+        } catch (err: any) {
           console.error("Resume upload failed", err)
-          alert("Resume upload failed. Try again.")
+          if (err.response?.status === 401) {
+            alert("Session expired. Please log in again.")
+            window.location.href = '/login'
+          } else {
+            alert("Resume upload failed. Try again.")
+          }
         }
       }
     }
+
     const handleComplete = async (sender: any) => {
       const data = sender.data
-      const token = localStorage.getItem("token")
       try {
         const res = await axios.post(
           `${process.env.NEXT_PUBLIC_API_URL}/api/application`,
           data,
-          { headers: { Authorization: `Bearer ${token}` } }
+          { withCredentials: true }  // Use cookie authentication
         )
         console.log("Application submitted:", res.data)
-      } catch (err) {
+        // Optionally redirect to success page or dashboard
+        // window.location.href = '/application-success'
+      } catch (err: any) {
         console.error("Failed to submit application:", err)
-        alert("Failed to submit application")
+        if (err.response?.status === 401) {
+          alert("Session expired. Please log in again.")
+          window.location.href = '/login'
+        } else {
+          alert("Failed to submit application")
+        }
       }
     }
+
     model.onValueChanged.add(handleValueChange)
     model.onComplete.add(handleComplete)
 

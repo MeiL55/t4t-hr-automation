@@ -10,6 +10,8 @@ from backend.models.database import SessionLocal
 from backend.models.user import User
 from backend.models.application import Application
 from dotenv import load_dotenv
+from flask import make_response
+from functools import wraps
 env_path = os.path.join(os.path.dirname(__file__), "..", "..", ".env")
 load_dotenv(dotenv_path=env_path)
 
@@ -41,31 +43,73 @@ def signup():
         return jsonify({"success": True}), 201
     except IntegrityError as e:
         db.rollback()
-        print("SIGNUP ERROR:", e)
+        #print("SIGNUP ERROR:", e)
         return jsonify({"error": "Database error"}), 500
 
 JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "dev-secret")
+
+def cookie_auth_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.cookies.get('token')
+        if not token:
+            return jsonify({"error": "Unauthorized"}), 401
+        try:
+            payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=["HS256"])
+            db = SessionLocal()
+            user = db.query(User).filter_by(id=payload["user_id"]).first()
+            db.close()
+            if not user:
+                return jsonify({"error": "User not found"}), 401
+            request.current_user = user
+        except jwt.ExpiredSignatureError:
+            return jsonify({"error": "Token expired"}), 401
+        except jwt.InvalidTokenError:
+            return jsonify({"error": "Invalid token"}), 401
+        except Exception:
+            return jsonify({"error": "Authentication failed"}), 401 
+        return f(*args, **kwargs)
+    return decorated
+
 @auth_bp.route("/api/login", methods=["POST"])
 def login():
     data = request.json
+    print(data)
     email = data.get("email")
     password = data.get("password")
     if not email or not password:
         return jsonify({"error": "Email and password required"}), 400
     db = SessionLocal()
-    user = db.query(User).filter_by(email=email).first()
-    if not user or not check_password_hash(user.password_hash, password):
-        return jsonify({"error": "Invalid credentials"}), 401
-
-    payload = {
-        "user_id": user.id,
-        "email": user.email,
-        "role": user.role,
-        "exp": datetime.utcnow() + timedelta(hours=8)
-    }
-
-    token = jwt.encode(payload, JWT_SECRET_KEY, algorithm="HS256")
-    return jsonify({"token": token})
+    try:
+        user = db.query(User).filter_by(email=email).first()
+        if not user or not check_password_hash(user.password_hash, password):
+            return jsonify({"error": "Invalid credentials"}), 401
+        payload = {
+            "user_id": user.id,
+            "email": user.email,
+            "role": user.role,
+            "exp": datetime.utcnow() + timedelta(hours=8)
+        }
+        token = jwt.encode(payload, JWT_SECRET_KEY, algorithm="HS256")
+        #print("Token is...")
+        #print(token)
+        response = make_response(jsonify({
+            "role": user.role,
+            "user": user.full_name
+        }))
+        #print("Setting cookie...")
+        response.set_cookie(
+            'token',
+            token,
+            max_age=8*60*60,
+            httponly=True,
+            secure=False,
+            samesite='Lax',
+            path='/'
+        )
+        return response
+    finally:
+        db.close()
 
 @auth_bp.route("/api/check_email", methods=["POST"])
 def check_email():
@@ -74,8 +118,11 @@ def check_email():
     if not email:
         return jsonify({"error": "Email is required"}), 400
     db = SessionLocal()
-    exists = db.query(User).filter_by(email=email).first()
-    return jsonify({"available": exists is None})
+    try:
+        exists = db.query(User).filter_by(email=email).first()
+        return jsonify({"available": exists is None})
+    finally:
+        db.close()
 
 @auth_bp.route("/api/check_telephone", methods=["POST"])
 def check_telephone():
@@ -84,29 +131,27 @@ def check_telephone():
     if not telephone:
         return jsonify({"error": "Telephone is required"}), 400
     db = SessionLocal()
-    exists = db.query(User).filter_by(telephone=telephone).first()
-    return jsonify({"available": exists is None})
+    try:
+        exists = db.query(User).filter_by(telephone=telephone).first()
+        return jsonify({"available": exists is None})
+    finally:
+        db.close()
 
 @auth_bp.route("/api/application_status", methods=["GET"])
+@cookie_auth_required
 def application_status():
-    auth_header = request.headers.get("Authorization")
-    if not auth_header or not auth_header.startswith("Bearer "):
-        return jsonify({"error": "Missing or invalid token"}), 401
-    token = auth_header.split(" ")[1]
-    try:
-        payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=["HS256"])
-    except InvalidTokenError:
-        return jsonify({"error": "Invalid or expired token"}), 401
-    user_id = payload.get("user_id")
-    if not user_id:
-        return jsonify({"error": "Invalid token payload"}), 401
+    user = request.current_user
+    print(f"Application status check for user: {user.id} ({user.full_name})")
     db = SessionLocal()
-    application = db.query(Application).filter_by(user_id=user_id).first()
-    if application:
-        return jsonify({ "status": application.stage })
-    else:
-        return jsonify({ "status": "not_started" })
-
+    try:
+        application = db.query(Application).filter_by(user_id=user.id).first()
+        if application:
+            return jsonify({"status": application.stage})
+        else:
+            return jsonify({"status": "not_started"})
+    finally:
+        db.close()
+'''
 def get_current_user(request):
     auth_header = request.headers.get("Authorization")
     if not auth_header or not auth_header.startswith("Bearer "):
@@ -127,3 +172,10 @@ def get_current_user(request):
         return user
     finally:
         db.close()
+'''
+# add a log out functionality
+@auth_bp.route("/api/logout", methods=["POST"])
+def logout():
+    response = make_response(jsonify({"message": "Logged out successfully"}))
+    response.set_cookie('token', '', expires=0)
+    return response

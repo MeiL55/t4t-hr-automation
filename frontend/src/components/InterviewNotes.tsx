@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import '../app/globals.css'
+
 interface InterviewNotesProps {
   applicantId: number
   stage: string // 'interview_1' | 'interview_2'
@@ -13,7 +14,6 @@ function InterviewNotes({ applicantId, stage }: InterviewNotesProps) {
   const [notes, setNotes] = useState('')
   const [lastUpdated, setLastUpdated] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
-
   const [previousRating, setPreviousRating] = useState<number | null>(null)
   const [previousNotes, setPreviousNotes] = useState<string | null>(null)
 
@@ -32,6 +32,7 @@ function InterviewNotes({ applicantId, stage }: InterviewNotesProps) {
           application_id: applicantId,
           stage,
         },
+        withCredentials: true, // Enable cookie authentication
       })
       .then((res) => {
         if (res.data.found) {
@@ -42,6 +43,11 @@ function InterviewNotes({ applicantId, stage }: InterviewNotesProps) {
       })
       .catch((err) => {
         console.error('Failed to load evaluation', err)
+        // Handle authentication errors
+        if (err.response?.status === 401) {
+          // Redirect to login or show auth error
+          window.location.href = '/login'
+        }
       })
   }, [applicantId, stage])
 
@@ -57,6 +63,7 @@ function InterviewNotes({ applicantId, stage }: InterviewNotesProps) {
             application_id: applicantId,
             stage: 'interview_1',
           },
+          withCredentials: true, // Enable cookie authentication
         })
         .then((res) => {
           if (res.data.found) {
@@ -66,6 +73,9 @@ function InterviewNotes({ applicantId, stage }: InterviewNotesProps) {
         })
         .catch((err) => {
           console.error('Failed to load previous round evaluation', err)
+          if (err.response?.status === 401) {
+            window.location.href = '/login'
+          }
         })
     }
   }, [applicantId, stage])
@@ -86,16 +96,27 @@ function InterviewNotes({ applicantId, stage }: InterviewNotesProps) {
 
     setIsSubmitting(true)
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/evaluation/save`, {
-        application_id: applicantId,
-        stage,
-        rating: selectedRating,
-        notes,
-      })
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/evaluation/save`,
+        {
+          application_id: applicantId,
+          stage,
+          rating: selectedRating,
+          notes,
+        },
+        {
+          withCredentials: true, // Enable cookie authentication
+        }
+      )
 
       setLastUpdated(new Date().toISOString())
-    } catch (err) {
-      alert('Failed to save evaluation.')
+    } catch (err: any) {
+      if (err.response?.status === 401) {
+        alert('Session expired. Please log in again.')
+        window.location.href = '/login'
+      } else {
+        alert('Failed to save evaluation.')
+      }
       console.error(err)
     } finally {
       setIsSubmitting(false)

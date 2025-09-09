@@ -23,12 +23,10 @@ export default function HRDashboard() {
 
   const fetchApplicants = async () => {
     try {
-      const token = localStorage.getItem("token")
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/hr_dashboard`, {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-      })
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/hr_dashboard`,
+        { withCredentials: true }
+      )
       setApplicants(res.data)
     } catch (err) {
       console.error('Error fetching applicants:', err)
@@ -37,10 +35,14 @@ export default function HRDashboard() {
 
   const updateStage = async (applicationId: number, newStage: string) => {
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/update_stage`, {
-        application_id: applicationId,
-        new_stage: newStage,
-      })
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/update_stage`,
+        {
+          application_id: applicationId,
+          new_stage: newStage,
+        },
+        { withCredentials: true }
+      )
       await fetchApplicants()
       setSelected(null)
     } catch (err) {

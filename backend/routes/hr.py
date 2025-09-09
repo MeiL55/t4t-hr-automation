@@ -6,7 +6,8 @@ from backend.models.database import SessionLocal
 from backend.models.application import Application
 from backend.models.evaluation import Evaluation
 from backend.services.s3_upload import generate_presigned_resume_url
-from backend.routes.auth import get_current_user
+
+from backend.routes.auth import cookie_auth_required
 from dotenv import load_dotenv
 env_path = os.path.join(os.path.dirname(__file__), "..", "..", ".env")
 load_dotenv(dotenv_path=env_path)
@@ -16,41 +17,45 @@ S3_BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
 hr_dashboard_bp = Blueprint('hr_dashboard', __name__)
 
 @hr_dashboard_bp.route('/api/hr_dashboard', methods=['GET'])
+@cookie_auth_required
 def get_interview_stage_applications():
     db = SessionLocal()
     try:
-        user = get_current_user(request)
+        hr_user = request.current_user
+        print(f"current hr user: ID={hr_user.id}, name={hr_user.full_name}, team={hr_user.hr_team}")
         apps_query = db.query(Application).filter(
             (
                 (Application.stage == 'interview_1') &
-                (Application.team_applied == user.hr_team)
+                (Application.team_applied == hr_user.hr_team)
             ) |
             (
                 (Application.stage == 'interview_2') &
-                ((Application.team_applied == user.hr_team) & (user.dept_lead))
+                ((Application.team_applied == hr_user.hr_team) & (hr_user.dept_lead))
             ) |
             (
                 (Application.stage == 'rejected_interview_1') &
-                (Application.team_applied == user.hr_team)
+                (Application.team_applied == hr_user.hr_team)
             ) |
             (
                 (Application.stage == 'rejected_interview_2') &
-                ((Application.team_applied == user.hr_team) & (user.dept_lead))
+                ((Application.team_applied == hr_user.hr_team) & (hr_user.dept_lead))
             ) |
             (
                 (Application.stage == 'offer_sent') &
-                ((Application.team_applied == user.hr_team) & (user.dept_lead))
+                ((Application.team_applied == hr_user.hr_team) & (hr_user.dept_lead))
             )
         )
         apps = apps_query.all()
         results = []
         for app in apps:
+            applicant = app.user
+            print(f"申请 {app.id}: 申请者ID={app.user.id}, 申请者姓名={app.user.full_name}")
             results.append({
                 "application_id": app.id,
-                "user_id": app.user.id,
-                "name": app.user.full_name,
-                "email": app.user.email,
-                "telephone": app.user.telephone,
+                "user_id": applicant.id,
+                "name": applicant.full_name,
+                "email": applicant.email,
+                "telephone": applicant.telephone,
                 "stage": app.stage,
                 "resume_filename": app.resume_filename,
                 "resume_url": generate_presigned_resume_url(app.resume_filename, expires=7200)
@@ -63,6 +68,7 @@ def get_interview_stage_applications():
         db.close()
 
 @hr_dashboard_bp.route('/api/update_stage', methods=['POST'])
+@cookie_auth_required
 def update_application_stage():
     db = SessionLocal()
     try:
@@ -89,6 +95,7 @@ def update_application_stage():
         db.close()
 
 @hr_dashboard_bp.route("/api/evaluation/get", methods=["GET"])
+@cookie_auth_required
 def get_evaluation():
     db = SessionLocal()
     try:
@@ -113,6 +120,7 @@ def get_evaluation():
     finally:
         db.close()
 @hr_dashboard_bp.route("/api/evaluation/save", methods=["POST"])
+@cookie_auth_required
 def save_evaluation():
     db = SessionLocal()
     try:

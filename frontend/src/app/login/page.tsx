@@ -26,7 +26,10 @@ export default function LoginPage() {
       const isFormatValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputEmail)
       if (!isFormatValid) return setEmailValid("invalid")
       try {
-        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/check_email`, { email: inputEmail })
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/check_email`, 
+          { email: inputEmail },
+          { withCredentials: true }
+        )
         setEmailValid(res.data.available ? "valid" : "taken")
       } catch {
         setEmailValid(null)
@@ -41,7 +44,10 @@ export default function LoginPage() {
       const isFormatValid = /^\+?\d{10,15}$/.test(inputTel)
       if (!isFormatValid) return setTelephoneValid("invalid")
       try {
-        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/check_telephone`, { telephone: inputTel })
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/check_telephone`, 
+          { telephone: inputTel },
+          { withCredentials: true }
+        )
         setTelephoneValid(res.data.available ? "valid" : "taken")
       } catch {
         setTelephoneValid(null)
@@ -69,36 +75,41 @@ export default function LoginPage() {
 
     try {
       if (mode === "login") {
-        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/login`, { email, password })
-        const token = res.data.token
-        localStorage.setItem("token", token)
-        const payload = JSON.parse(atob(token.split(".")[1]))
-        const role = payload.role
-        localStorage.setItem("role", role)
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/login`, 
+          { email, password }, 
+          { withCredentials: true }
+        )
+        
+        // Get role from server response (JWT token stored in HTTP-only cookie)
+        const { role, user } = res.data
 
         setMessage({ text: `Login successful! Redirecting...`, type: "success" })
         
-        if (role === "hr") router.push("/hr_dashboard")
-        else if (role === "admin") router.push("/admin_panel")
-        else if (role === "applicant") {
-          const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/application_status`, {
-            headers: { Authorization: `Bearer ${token}` }
+        if (role === "hr") {
+          router.push("/hr_dashboard")
+        } else if (role === "admin") {
+          router.push("/admin_panel")
+        } else if (role === "applicant") {
+          const statusRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/application_status`, {
+            withCredentials: true
           });
-          const status = res.data.status;
-          if (status == 'not_started') {
+          const status = statusRes.data.status;
+          if (status === 'not_started') {
             router.push("/apply");
           } else {
-            router.push(`/applystage?status=${status}`);
+            router.push(`/applystage`);
           }
+        } else {
+          router.push("/unauthorized")
         }
-        else router.push("/unauthorized")
       } else {
         await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/signup`, {
           email,
           password,
           full_name: fullName,
           telephone,
-        })
+        }, { withCredentials: true })
+        
         setMessage({ text: "Signup successful! Please log in.", type: "success" })
         setMode("login")
         setFullName("")

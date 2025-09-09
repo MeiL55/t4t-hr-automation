@@ -9,7 +9,12 @@ from backend.routes.hr import hr_dashboard_bp
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True)
+
+CORS(app, 
+     supports_credentials=True,
+     origins=["http://localhost:3000", "https://hr-frontend-theta.vercel.app/"],
+     allow_credentials=True
+)
 app.register_blueprint(auth_bp)
 app.register_blueprint(user_bp)
 app.register_blueprint(resume_bp)
