@@ -25,16 +25,16 @@ def get_interview_stage_applications():
         print(f"current hr user: ID={hr_user.id}, name={hr_user.full_name}, team={hr_user.hr_team}")
         apps_query = db.query(Application).filter(
             (
-                (Application.stage == 'interview_1') &
-                (Application.team_applied == hr_user.hr_team)
+                (Application.stage == 'interview_1') #&
+                #(Application.team_applied == hr_user.hr_team)
             ) |
             (
                 (Application.stage == 'interview_2') &
                 ((Application.team_applied == hr_user.hr_team) & (hr_user.dept_lead))
             ) |
             (
-                (Application.stage == 'rejected_interview_1') &
-                (Application.team_applied == hr_user.hr_team)
+                (Application.stage == 'rejected_interview_1') #&
+                #(Application.team_applied == hr_user.hr_team)
             ) |
             (
                 (Application.stage == 'rejected_interview_2') &
@@ -49,7 +49,6 @@ def get_interview_stage_applications():
         results = []
         for app in apps:
             applicant = app.user
-            print(f"申请 {app.id}: 申请者ID={app.user.id}, 申请者姓名={app.user.full_name}")
             results.append({
                 "application_id": app.id,
                 "user_id": applicant.id,

@@ -1,73 +1,113 @@
 {
   "software": {
     "round1": [
-      { "label": "Morning", "owner": "Maxwell", "url": "https://calendly.com/maxwell-g-cabrera/20minutes" },
-      { "label": "Early Evening", "owner": "Krishna", "url": "https://calendly.com/krishnahsanghani/teens4teens-interviews" },
-      { "label": "Late Evening", "owner": "John", "url": "https://calendly.com/johnhnguyen2000/20" },
-      { "label": "Weekend", "owner": "Mehr", "url": "https://calendly.com/teens4teens_mehr/interview" }
+      { "label": "Chapter Lead", "owner": "Krishna", "url": "https://calendly.com/krishnahsanghani/teens4teens-interviews" },
+      { "label": "HR Lead", "owner": "Sophia", "url": "http://calendly.com/sophiabrittopereira-hpyi" },
+      { "label": "Software Lead", "owner": "Mehr", "url": "https://calendly.com/teens4teens_mehr/t4t-interview" },
+      { "label": "Ops Lead", "owner": "Boyce", "url": "https://calendly.com/teens4teens/chapter-leader-interview" },
+      { "label": "Finance Lead", "owner": "Arin", "url": "https://calendly.com/arinwani07/swe-intern-interview" },
+      { "label": "Media Lead", "owner": "Yareli", "url": "https://calendly.com/yarolivares/fall-media-meeting-times" },
+      { "label": "Outreach Lead", "owner": "Mehek", "url": "https://calendly.com/msawhney752/mehek-1-on-1-interviews" },
+      { "label": "Software Project Manager", "owner": "Shiv", "url": "https://calendly.com/shivgandhi2005/t4t-interview" }
     ],
     "round2": [
-      { "label": "Dept Lead 1:1", "owner": "Mehr Anand", "url": "https://calendly.com/teens4teens_mehr/interview" }
+      { "label": "Dept Lead 1:1", "owner": "Mehr Anand", "url": "https://calendly.com/teens4teens_mehr/t4t-interview" }
     ]
   },
 
   "finance": {
     "round1": [
-      { "label": "Morning", "owner": "Maxwell", "url": "https://calendly.com/maxwell-g-cabrera/20minutes" },
-      { "label": "Evening", "owner": "Finance Recruiter", "url": "https://calendly.com/..." }
+      { "label": "Chapter Lead", "owner": "Krishna", "url": "https://calendly.com/krishnahsanghani/teens4teens-interviews" },
+      { "label": "HR Lead", "owner": "Sophia", "url": "http://calendly.com/sophiabrittopereira-hpyi" },
+      { "label": "Software Lead", "owner": "Mehr", "url": "https://calendly.com/teens4teens_mehr/t4t-interview" },
+      { "label": "Ops Lead", "owner": "Boyce", "url": "https://calendly.com/teens4teens/chapter-leader-interview" },
+      { "label": "Finance Lead", "owner": "Arin", "url": "https://calendly.com/arinwani07/swe-intern-interview" },
+      { "label": "Media Lead", "owner": "Yareli", "url": "https://calendly.com/yarolivares/fall-media-meeting-times" },
+      { "label": "Outreach Lead", "owner": "Mehek", "url": "https://calendly.com/msawhney752/mehek-1-on-1-interviews" },
+      { "label": "Software Project Manager", "owner": "Shiv", "url": "https://calendly.com/shivgandhi2005/t4t-interview" }
     ],
     "round2": [
-      { "label": "Dept Lead 1:1", "owner": "Arin Wani", "url": "https://calendly.com/..." }
+      { "label": "Dept Lead 1:1", "owner": "Arin Wani", "url": "https://calendly.com/arinwani07/swe-intern-interview" }
     ]
   },
 
   "media": {
     "round1": [
-      { "label": "Morning", "owner": "Maxwell", "url": "https://calendly.com/maxwell-g-cabrera/20minutes" },
-      { "label": "Evening", "owner": "Media Recruiter", "url": "https://calendly.com/..." }
+      { "label": "Chapter Lead", "owner": "Krishna", "url": "https://calendly.com/krishnahsanghani/teens4teens-interviews" },
+      { "label": "HR Lead", "owner": "Sophia", "url": "http://calendly.com/sophiabrittopereira-hpyi" },
+      { "label": "Software Lead", "owner": "Mehr", "url": "https://calendly.com/teens4teens_mehr/t4t-interview" },
+      { "label": "Ops Lead", "owner": "Boyce", "url": "https://calendly.com/teens4teens/chapter-leader-interview" },
+      { "label": "Finance Lead", "owner": "Arin", "url": "https://calendly.com/arinwani07/swe-intern-interview" },
+      { "label": "Media Lead", "owner": "Yareli", "url": "https://calendly.com/yarolivares/fall-media-meeting-times" },
+      { "label": "Outreach Lead", "owner": "Mehek", "url": "https://calendly.com/msawhney752/mehek-1-on-1-interviews" },
+      { "label": "Software Project Manager", "owner": "Shiv", "url": "https://calendly.com/shivgandhi2005/t4t-interview" }
     ],
     "round2": [
-      { "label": "Dept Lead 1:1", "owner": "Yareli", "url": "https://calendly.com/..." }
+      { "label": "Dept Lead 1:1", "owner": "Yareli Olivares", "url": "https://calendly.com/yarolivares/fall-media-meeting-times" }
     ]
   },
 
   "outreach": {
     "round1": [
-      { "label": "Morning", "owner": "Maxwell", "url": "https://calendly.com/maxwell-g-cabrera/20minutes" },
-      { "label": "Evening", "owner": "Outreach Recruiter", "url": "https://calendly.com/..." }
+      { "label": "Chapter Lead", "owner": "Krishna", "url": "https://calendly.com/krishnahsanghani/teens4teens-interviews" },
+      { "label": "HR Lead", "owner": "Sophia", "url": "http://calendly.com/sophiabrittopereira-hpyi" },
+      { "label": "Software Lead", "owner": "Mehr", "url": "https://calendly.com/teens4teens_mehr/t4t-interview" },
+      { "label": "Ops Lead", "owner": "Boyce", "url": "https://calendly.com/teens4teens/chapter-leader-interview" },
+      { "label": "Finance Lead", "owner": "Arin", "url": "https://calendly.com/arinwani07/swe-intern-interview" },
+      { "label": "Media Lead", "owner": "Yareli", "url": "https://calendly.com/yarolivares/fall-media-meeting-times" },
+      { "label": "Outreach Lead", "owner": "Mehek", "url": "https://calendly.com/msawhney752/mehek-1-on-1-interviews" },
+      { "label": "Software Project Manager", "owner": "Shiv", "url": "https://calendly.com/shivgandhi2005/t4t-interview" }
     ],
     "round2": [
-      { "label": "Dept Lead 1:1", "owner": "Mehek", "url": "https://calendly.com/..." }
+      { "label": "Dept Lead 1:1", "owner": "Mehek", "url": "https://calendly.com/msawhney752/mehek-1-on-1-interviews" }
     ]
   },
 
   "human_resources": {
     "round1": [
-      { "label": "Morning", "owner": "Maxwell", "url": "https://calendly.com/maxwell-g-cabrera/20minutes" },
-      { "label": "Evening", "owner": "HR Recruiter", "url": "https://calendly.com/..." }
+      { "label": "Chapter Lead", "owner": "Krishna", "url": "https://calendly.com/krishnahsanghani/teens4teens-interviews" },
+      { "label": "HR Lead", "owner": "Sophia", "url": "http://calendly.com/sophiabrittopereira-hpyi" },
+      { "label": "Software Lead", "owner": "Mehr", "url": "https://calendly.com/teens4teens_mehr/t4t-interview" },
+      { "label": "Ops Lead", "owner": "Boyce", "url": "https://calendly.com/teens4teens/chapter-leader-interview" },
+      { "label": "Finance Lead", "owner": "Arin", "url": "https://calendly.com/arinwani07/swe-intern-interview" },
+      { "label": "Media Lead", "owner": "Yareli", "url": "https://calendly.com/yarolivares/fall-media-meeting-times" },
+      { "label": "Outreach Lead", "owner": "Mehek", "url": "https://calendly.com/msawhney752/mehek-1-on-1-interviews" },
+      { "label": "Software Project Manager", "owner": "Shiv", "url": "https://calendly.com/shivgandhi2005/t4t-interview" }
     ],
     "round2": [
-      { "label": "Dept Lead 1:1", "owner": "John", "url": "https://calendly.com/..." }
+      { "label": "Dept Lead 1:1", "owner": "Sophia", "url": "http://calendly.com/sophiabrittopereira-hpyi" }
     ]
   },
 
   "chapters": {
     "round1": [
-      { "label": "Morning", "owner": "Maxwell", "url": "https://calendly.com/maxwell-g-cabrera/20minutes" },
-      { "label": "Evening", "owner": "Chapters Recruiter", "url": "https://calendly.com/..." }
+      { "label": "Chapter Lead", "owner": "Krishna", "url": "https://calendly.com/krishnahsanghani/teens4teens-interviews" },
+      { "label": "HR Lead", "owner": "Sophia", "url": "http://calendly.com/sophiabrittopereira-hpyi" },
+      { "label": "Software Lead", "owner": "Mehr", "url": "https://calendly.com/teens4teens_mehr/t4t-interview" },
+      { "label": "Ops Lead", "owner": "Boyce", "url": "https://calendly.com/teens4teens/chapter-leader-interview" },
+      { "label": "Finance Lead", "owner": "Arin", "url": "https://calendly.com/arinwani07/swe-intern-interview" },
+      { "label": "Media Lead", "owner": "Yareli", "url": "https://calendly.com/yarolivares/fall-media-meeting-times" },
+      { "label": "Outreach Lead", "owner": "Mehek", "url": "https://calendly.com/msawhney752/mehek-1-on-1-interviews" },
+      { "label": "Software Project Manager", "owner": "Shiv", "url": "https://calendly.com/shivgandhi2005/t4t-interview" }
     ],
     "round2": [
-      { "label": "Dept Lead 1:1", "owner": "Regional Lead", "url": "https://calendly.com/..." }
+      { "label": "Dept Lead 1:1", "owner": "Krishna", "url": "https://calendly.com/krishnahsanghani/teens4teens-interviews" }
     ]
   },
 
   "special_ops": {
     "round1": [
-      { "label": "Morning", "owner": "Maxwell", "url": "https://calendly.com/maxwell-g-cabrera/20minutes" },
-      { "label": "Evening", "owner": "Ops Recruiter", "url": "https://calendly.com/..." }
+      { "label": "Chapter Lead", "owner": "Krishna", "url": "https://calendly.com/krishnahsanghani/teens4teens-interviews" },
+      { "label": "HR Lead", "owner": "Sophia", "url": "http://calendly.com/sophiabrittopereira-hpyi" },
+      { "label": "Software Lead", "owner": "Mehr", "url": "https://calendly.com/teens4teens_mehr/t4t-interview" },
+      { "label": "Ops Lead", "owner": "Boyce", "url": "https://calendly.com/teens4teens/chapter-leader-interview" },
+      { "label": "Finance Lead", "owner": "Arin", "url": "https://calendly.com/arinwani07/swe-intern-interview" },
+      { "label": "Media Lead", "owner": "Yareli", "url": "https://calendly.com/yarolivares/fall-media-meeting-times" },
+      { "label": "Outreach Lead", "owner": "Mehek", "url": "https://calendly.com/msawhney752/mehek-1-on-1-interviews" },
+      { "label": "Software Project Manager", "owner": "Shiv", "url": "https://calendly.com/shivgandhi2005/t4t-interview" }
     ],
     "round2": [
-      { "label": "Dept Lead 1:1", "owner": "Ops Lead", "url": "https://calendly.com/..." }
+      { "label": "Dept Lead 1:1", "owner": "Boyce Pressly", "url": "https://calendly.com/teens4teens/chapter-leader-interview" }
     ]
   }
 }
