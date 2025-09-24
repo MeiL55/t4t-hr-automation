@@ -11,7 +11,3 @@ __pycache__/
 # System/editor files
 .DS_Store
 .vscode/
-
-backend/docker-compose.yml
-frontend/src/data/rolesByTeam.json
-backend/data

@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: >
+      celery -A backend.celery_app.app worker --loglevel=info --concurrency=3 --uid=nobody --gid=nogroup
+    environment:
+      SUPABASE_DB_URL: ${SUPABASE_DB_URL}
+      REDIS_URL: ${REDIS_URL}
+      HOME: /tmp
+      PGSSLCERT:
+      PGSSLKEY:
+      PGSSLMODE: require
+    volumes:
+      - ./empty_pg:/root/.postgresql:root
+
+  beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - worker
+      - redis
+    command: >
+      celery -A backend.celery_app.app beat --loglevel=info --schedule=/tmp/celerybeat-schedule --uid=nobody --gid=nogroup
+    environment:
+      SUPABASE_DB_URL: ${SUPABASE_DB_URL}
+      REDIS_URL: ${REDIS_URL}
+      HOME: /tmp
+      PGSSLCERT:
+      PGSSLKEY:
+      PGSSLMODE: require
+    volumes:
+      - ./empty_pg:/root/.postgresql:root
+
+  redis:
+    image: redis:7-alpine
