@@ -13,3 +13,5 @@ __pycache__/
 .vscode/
 
 backend/docker-compose.yml
+frontend/src/data/rolesByTeam.json
+backend/data
